@@ -1,7 +1,11 @@
 "use client"
+import { routes } from '@/app/data/routes'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import React from 'react'
 
 const Sidebar = () => {
+    const pathname = usePathname()
     return (
         <div
             className="sidebar h-full p-2 w-[300px]   text-center bg-gray-900"
@@ -17,13 +21,18 @@ const Sidebar = () => {
                 </div>
                 <div className="my-2 bg-gray-600 h-[1px]"></div>
             </div>
+            {routes.map((route, index) => (
+                <Link href={route.route}>
+                    <div
+                        className={`p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer ${pathname== route.route && "bg-gray-600"}  hover:bg-blue-600 text-white`}
+                    >
+                        <i className="bi bi-house-door-fill"></i>
+                        <span className="text-[15px] ml-4 text-gray-200 font-bold">{route.name}</span>
+                    </div>
+                </Link>
+                ))}
 
-            <div
-                className="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
-            >
-                <i className="bi bi-house-door-fill"></i>
-                <span className="text-[15px] ml-4 text-gray-200 font-bold">Home</span>
-            </div>
+
 
 
         </div>
