@@ -13,7 +13,7 @@ interface CreationCardProps {
 }
 const CreationCard = ({ heading, details }: CreationCardProps) => {
     return (
-        <Card className='w-full'>
+        <Card className='w-full bg-gray-100 shadow-lg hover:scale-105 transition-all cursor-pointer'>
             <CardHeader >
                 <CardTitle className="">
                     {heading}
