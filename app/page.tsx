@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Home() {
   return (
-    <div className="bg-slate-900">
+    <div className="bg-slate-900 h-full">
       <div className="bg-gradient-to-b from-orange-600/[.15] via-transparent">
         <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-24 space-y-8">
           <div className="flex justify-center">
@@ -49,7 +49,7 @@ export default function Home() {
           <div className="text-center">
             <Link
               className="inline-flex justify-center items-center gap-x-3 text-center bg-gradient-to-tl from-blue-600 to-violet-600 shadow-lg shadow-transparent hover:shadow-blue-700/50 border border-transparent text-white text-sm font-medium rounded-full focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-white py-3 px-6 dark:focus:ring-offset-gray-800"
-              href="/auth/login"
+              href="/auth/register"
             >
               Get Started
               <svg

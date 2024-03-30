@@ -9,8 +9,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import Personal from "@/app/(profile)/components/Personal";
-import TableContainer from "@/app/(profile)/components/TableContainer";
+import Personal from "@/app/(main)/profile/components/Personal";
+import TableContainer from "@/app/(main)/profile/components/TableContainer";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

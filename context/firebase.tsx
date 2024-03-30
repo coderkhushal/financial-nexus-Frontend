@@ -10,7 +10,9 @@ import {
   signInWithPopup,
   UserCredential,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
+
 import { useRouter } from "next/navigation";
 const firebaseConfig = {
   apiKey: "AIzaSyA4zcVGS8WfwIvRQUhKsTB5-x78GRdGWTg",
@@ -32,6 +34,8 @@ type AuthContextType = {
     password: string
   ) => Promise<UserCredential | void>;
   signinwithgoogle: () => Promise<UserCredential | void>;
+  handlesignout: () => Promise<{ message: string }>;
+  setUser: (user: UserCredential | null) => void;
   User: UserCredential | null;
 };
 
@@ -44,6 +48,8 @@ export const siginincontext = createContext<AuthContextType>({
   signupwithemailandpassword: () => Promise.resolve(),
   signinwithemailandpassword: () => Promise.resolve(),
   signinwithgoogle: () => Promise.resolve(),
+  handlesignout: () => Promise.resolve({ message: "" }),
+  setUser: () => {},
   User: null,
 });
 
@@ -55,6 +61,7 @@ export const Signinprovider = ({ children }: { children: React.ReactNode }) => {
     const u = localStorage.getItem("user");
     if (u) {
       setUser(JSON.parse(u));
+      router.push("/dashboard");
     }
   }, []);
   //login with email and password
@@ -85,6 +92,14 @@ export const Signinprovider = ({ children }: { children: React.ReactNode }) => {
       return usercred;
     });
 
+  const handlesignout = () =>
+    signOut(auth).then(() => {
+      localStorage.removeItem("user");
+      setUser(null);
+      router.push("/");
+
+      return { message: "user signed out" };
+    });
   return (
     <siginincontext.Provider
       value={{
