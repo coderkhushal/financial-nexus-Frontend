@@ -8,4 +8,8 @@ export const routes= [
         route:"/transactions",
         name:"Transactions ",
     },
+    {
+        route:"/profile",
+        name:"Profile ",
+    },
 ]

@@ -7,7 +7,7 @@ import CardDetailsComponent from '../components/bankCard/card-details-component'
 import LoanDetailsComponent from '../components/loan/loan-details-component'
 import PurchaseDetailsComponent from '../components/purchaseInvestment/purchase-details-component'
 import InvestmentDetailsComponent from '../components/purchaseInvestment/investment-details-component'
-import { bankdetailsarr, carddetailsarr, loandetailsarr, purchasedetailsarr, investmentdetailsarr } from '@/app/data/sampledata'
+import { bankdetailsarr, carddetailsarr, loandetailsarr, purchasedetailsarr, investmentdetailsarr } from '@/data/sampledata'
 
 const DashBoardPage = () => {
     

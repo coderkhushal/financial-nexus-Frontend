@@ -1,5 +1,5 @@
 "use client"
-import { routes } from '@/app/data/routes'
+import { routes } from '@/data/routes'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'

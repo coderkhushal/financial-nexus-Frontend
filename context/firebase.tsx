@@ -1,13 +1,14 @@
 "use client";
 
 // Import the functions you need from the SDKs you need
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { initializeApp } from "firebase/app";
 import {
   GoogleAuthProvider,
   getAuth,
   createUserWithEmailAndPassword,
   signInWithPopup,
+  UserCredential,
 } from "firebase/auth";
 const firebaseConfig = {
   apiKey: "AIzaSyA4zcVGS8WfwIvRQUhKsTB5-x78GRdGWTg",
@@ -19,34 +20,53 @@ const firebaseConfig = {
   measurementId: "G-60TLWJCZYL",
 };
 
+type AuthContextType = {
+  signinwithemailandpassword: (email: string, password: string) =>Promise<UserCredential | void>;
+  signinwithgoogle: () => Promise<UserCredential | void>;
+  User: UserCredential | null;
+};
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-export const siginincontext = createContext({});
+export const siginincontext = createContext<AuthContextType>({
+  signinwithemailandpassword: () => Promise.resolve(),
+  signinwithgoogle: () => Promise.resolve(),
+  User: null
+});
 
 export const Signinprovider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState();
+  const [User, setUser] = useState<UserCredential | null>(null);
 
   //login with email and password
   const signinwithemailandpassword = (email: string, password: string) =>
-    createUserWithEmailAndPassword(auth, email, password).then((usercred) => {
-      console.log(usercred);
+    createUserWithEmailAndPassword(auth, email, password).then((usercred: UserCredential) => {
+      
       setUser(usercred);
+      return usercred
     });
+
+
   //login with google
   const signinwithgoogle = () =>
     signInWithPopup(auth, provider).then((usercred) => {
-      console.log(usercred);
+      
       setUser(usercred);
+      
+      return usercred
     });
-
+    
   return (
     <siginincontext.Provider
-      value={{ signinwithemailandpassword, signinwithgoogle, user }}
+      value={{ signinwithemailandpassword, signinwithgoogle, User }}
     >
       {children}
     </siginincontext.Provider>
   );
 };
+
+export const userfirebase = ()=>{
+  return useContext(siginincontext)
+}
