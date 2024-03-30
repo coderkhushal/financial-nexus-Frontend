@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 
 import CreationCard from '../components/creationcard'
 import Detailscard from '../components/Detailscard'
@@ -12,34 +12,34 @@ import { bankdetailsarr, carddetailsarr, loandetailsarr, purchasedetailsarr, inv
 import BankCreationModal from '../components/creationmodals/bank-creation-moda'
 
 const DashBoardPage = () => {
-    
     return (
         <div className='w-full gap-10 h-full flex flex-col'>
             <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 w-full'>
-                
+
                 <BankCreationModal>
 
-                <CreationCard heading='Add Bank/Card' details='you have currently 3 bank accounts' />
+                    <CreationCard heading='Add Bank/Card' details='you have currently 3 bank accounts' />
                 </BankCreationModal>
+
                 <CreationCard heading='Add Investment/Purchases' details='you have currently 3 bank accounts' />
                 <CreationCard heading='Add Loan/Emi' details='you have currently 3 bank accounts' />
             </div>
 
             <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 w-full'>
                 <Detailscard heading="Bank/Card Details">
-                    <BanksDetailsComponent heading='Bank Details' bankdetailsarr={bankdetailsarr}/>
+                    <BanksDetailsComponent heading='Bank Details' bankdetailsarr={bankdetailsarr} />
                     <CardDetailsComponent heading='Card Details' carddetailsarr={carddetailsarr} />
                 </Detailscard>
                 <Detailscard heading="Loan/Emi Details">
-                    <LoanDetailsComponent heading='Loans' loandetailsarr={loandetailsarr}/>
-                    <LoanDetailsComponent heading='Emi' loandetailsarr={loandetailsarr}/>
+                    <LoanDetailsComponent heading='Loans' loandetailsarr={loandetailsarr} />
+                    <LoanDetailsComponent heading='Emi' loandetailsarr={loandetailsarr} />
                 </Detailscard>
                 <Detailscard heading="Purchases/Investments">
-                    
-                    <PurchaseDetailsComponent heading='Purchases' purchasedetailsarr={purchasedetailsarr}/>
-                    <InvestmentDetailsComponent heading='Investments' investmentdetailsarr={investmentdetailsarr}/>
+
+                    <PurchaseDetailsComponent heading='Purchases' purchasedetailsarr={purchasedetailsarr} />
+                    <InvestmentDetailsComponent heading='Investments' investmentdetailsarr={investmentdetailsarr} />
                 </Detailscard>
-       
+
             </div>
 
 

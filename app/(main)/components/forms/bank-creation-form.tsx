@@ -53,7 +53,9 @@ const BankCreationForm = ({ variant }: { variant: "BANK" | "CARD" }) => {
         seterror("")
         setsuccess("")
         setPending(true)
-        let idtoken = await User?.user?.getIdToken()
+ 
+        console.log(User)
+        const idtoken = await User?.user?.getIdToken()
         if(idtoken){
             
             const response = await fetch(`${SERVER}/data-add/add-bank`, {
@@ -69,14 +71,16 @@ const BankCreationForm = ({ variant }: { variant: "BANK" | "CARD" }) => {
             })
             if(response.status==200){
                 setsuccess("Added Successfully")
+                setPending(false)
                 
             }
             else{
                 seterror("Internal Server Error")
+                setPending(false)
             }
             
         }
-        setPending(false)
+
     }
     return (
         <ScrollArea className="h-60 relative overflow-y-scroll">
