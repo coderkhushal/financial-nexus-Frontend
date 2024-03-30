@@ -1,14 +1,17 @@
 "use client";
 
 // Import the functions you need from the SDKs you need
-import { createContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import {
   GoogleAuthProvider,
   getAuth,
   createUserWithEmailAndPassword,
   signInWithPopup,
+  UserCredential,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
+import { useRouter } from "next/navigation";
 const firebaseConfig = {
   apiKey: "AIzaSyA4zcVGS8WfwIvRQUhKsTB5-x78GRdGWTg",
   authDomain: "financial-dashboard-e0c5f.firebaseapp.com",
@@ -19,34 +22,75 @@ const firebaseConfig = {
   measurementId: "G-60TLWJCZYL",
 };
 
+type AuthContextType = {
+  signinwithemailandpassword: (email: string, password: string) => Promise<UserCredential | void>;
+  signupwithemailandpassword: (email: string, password: string) => Promise<UserCredential | void>;
+  signinwithgoogle: () => Promise<UserCredential | void>;
+  User: UserCredential | null;
+};
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-export const siginincontext = createContext({});
+export const siginincontext = createContext<AuthContextType>({
+  signupwithemailandpassword: () => Promise.resolve(),
+  signinwithemailandpassword: () => Promise.resolve(),
+  signinwithgoogle: () => Promise.resolve(),
+  User: null
+});
 
 export const Signinprovider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState();
+  const router= useRouter()
 
+  const [User, setUser] = useState<UserCredential | null>(null);
+  useEffect(() => {
+    const u = localStorage.getItem("user")
+    if (u) {
+
+      setUser(
+        JSON.parse(u)
+      )
+      router.push("/dashboard")
+    }
+
+  }, [])  
   //login with email and password
   const signinwithemailandpassword = (email: string, password: string) =>
-    createUserWithEmailAndPassword(auth, email, password).then((usercred) => {
-      console.log(usercred);
+    signInWithEmailAndPassword(auth, email, password).then((usercred: UserCredential) => {
+
       setUser(usercred);
+      localStorage.setItem("user", JSON.stringify(usercred))
+      return usercred
     });
+
+  const signupwithemailandpassword = (email: string, password: string) =>
+    createUserWithEmailAndPassword(auth, email, password).then((usercred: UserCredential) => {
+      setUser(usercred);
+      localStorage.setItem("user", JSON.stringify(usercred))
+      return usercred
+    })
+
   //login with google
   const signinwithgoogle = () =>
     signInWithPopup(auth, provider).then((usercred) => {
-      console.log(usercred);
+
       setUser(usercred);
+      localStorage.setItem("user", JSON.stringify(usercred))
+
+      return usercred
     });
 
   return (
     <siginincontext.Provider
-      value={{ signinwithemailandpassword, signinwithgoogle, user }}
+      value={{ signinwithemailandpassword, signinwithgoogle, signupwithemailandpassword, User }}
     >
       {children}
     </siginincontext.Provider>
   );
 };
+
+export const userfirebase = () => {
+  return useContext(siginincontext)
+}
