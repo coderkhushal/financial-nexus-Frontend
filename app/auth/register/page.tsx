@@ -26,7 +26,7 @@ const RegisterPage = () => {
     const [error, seterror]= useState<string | undefined>(undefined)
     const [success, setsuccess]= useState<string | undefined>(undefined)
     const [Pending , setPending] = useState(false)
-    const {signinwithemailandpassword} = userfirebase()
+    const {signupwithemailandpassword} = userfirebase()
 
     const form = useForm<z.infer<typeof RegisterSchema>>({
         resolver : zodResolver(RegisterSchema),
@@ -44,7 +44,7 @@ const RegisterPage = () => {
         setPending(true)
         try{
 
-            let usercred = await signinwithemailandpassword(values.email, values.password)
+            let usercred = await signupwithemailandpassword(values.email, values.password)
             register(usercred,values.username)
             .then((data)=>{
                 setsuccess(data.success)

@@ -9,6 +9,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   UserCredential,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 const firebaseConfig = {
   apiKey: "AIzaSyA4zcVGS8WfwIvRQUhKsTB5-x78GRdGWTg",
@@ -22,6 +23,7 @@ const firebaseConfig = {
 
 type AuthContextType = {
   signinwithemailandpassword: (email: string, password: string) =>Promise<UserCredential | void>;
+  signupwithemailandpassword: (email: string, password: string) =>Promise<UserCredential | void>;
   signinwithgoogle: () => Promise<UserCredential | void>;
   User: UserCredential | null;
 };
@@ -32,6 +34,7 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 export const siginincontext = createContext<AuthContextType>({
+  signupwithemailandpassword: () => Promise.resolve(),
   signinwithemailandpassword: () => Promise.resolve(),
   signinwithgoogle: () => Promise.resolve(),
   User: null
@@ -42,12 +45,17 @@ export const Signinprovider = ({ children }: { children: React.ReactNode }) => {
 
   //login with email and password
   const signinwithemailandpassword = (email: string, password: string) =>
-    createUserWithEmailAndPassword(auth, email, password).then((usercred: UserCredential) => {
+    signInWithEmailAndPassword(auth, email, password).then((usercred: UserCredential) => {
       
       setUser(usercred);
       return usercred
     });
 
+  const signupwithemailandpassword = (email: string, password: string) =>
+    createUserWithEmailAndPassword(auth, email, password).then((usercred: UserCredential) => {
+      setUser(usercred);
+      return usercred
+    })
 
   //login with google
   const signinwithgoogle = () =>
@@ -60,7 +68,7 @@ export const Signinprovider = ({ children }: { children: React.ReactNode }) => {
     
   return (
     <siginincontext.Provider
-      value={{ signinwithemailandpassword, signinwithgoogle, User }}
+      value={{ signinwithemailandpassword, signinwithgoogle,signupwithemailandpassword, User }}
     >
       {children}
     </siginincontext.Provider>

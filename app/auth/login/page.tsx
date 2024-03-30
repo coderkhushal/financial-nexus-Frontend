@@ -20,7 +20,11 @@ import { login } from '@/actions/login'
 import FormError from '@/components/form-error'
 import FormSuccess from '@/components/form-success'
 import Social from '@/components/social'
+import { userfirebase } from '@/context/firebase'
+import { useRouter } from 'next/navigation'
 const LoginPage = () => {
+    const router= useRouter()
+    const {signinwithemailandpassword} = userfirebase()
     const [error, seterror]= useState<string | undefined>(undefined)
     const [success, setsuccess]= useState<string | undefined>(undefined)
 
@@ -34,19 +38,29 @@ const LoginPage = () => {
         }
     })
 
-    function onSubmit(values : z.infer<typeof LoginSchema>) {
+    async function onSubmit(values : z.infer<typeof LoginSchema>) {
         setsuccess("")
         seterror("")
         setPending(true)
-            login(values)
-            .then((data)=>{
-                setsuccess(data.success)
-                seterror(data.error)
-                setPending(false)
-            })
+        try{
+
+            let usercred = await signinwithemailandpassword(values.email, values.password)
             
-        
-    }
+            if(usercred?.user){
+                setsuccess("Login Successful")
+                router.push("/dashboard")
+            }
+            else{
+                seterror("Invalid Credentials")
+            }
+            setPending(false)
+            
+        }
+        catch(err){
+            console.log(err)
+            seterror(`Invalid Credentails`)
+            setPending(false)
+        }}
   return (
     <div className='h-full w-full bg-[#261655] flex justify-center items-center'>
         <CardWrapper heading='Welcome back !' backbuttonhref='/auth/register' backbuttonlabel={`Don't have an account?`}>

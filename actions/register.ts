@@ -15,16 +15,23 @@ export const register= async (usercred: UserCredential | void, name: string )=>{
     
     let firebase_user_id= await usercred.user.getIdToken()
     let email =await  usercred.user.email
-    const resp = await fetch(`${SERVER}/user/create-user`, {
-        method: "POST",
-        headers: getHeaders(firebase_user_id), 
-        body: JSON.stringify({name, email, firebase_user_id})
-    })
-    if(resp.status !== 200){
-        return {"error":"Internal Server Error"}
-    }
-    else{
+    try{
 
-        return {"success":"User registered successfully", error: undefined}
+        const resp = await fetch(`${SERVER}/user/create-user`, {
+            method: "POST",
+            headers: getHeaders(firebase_user_id), 
+            body: JSON.stringify({name, email, firebase_user_id})
+        })
+        if(resp.status !== 200){
+            return {"error":"Internal Server Error"}
+        }
+        else{
+            
+            return {"success":"User registered successfully", error: undefined}
+        }
+    }
+    catch(err){
+        return {"error":"Internal Server Error"}
+    
     }
 }
