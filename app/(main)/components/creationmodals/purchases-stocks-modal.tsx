@@ -18,9 +18,12 @@ import { useState } from "react"
 import { AiOutlineBank } from "react-icons/ai";
 import BankCreationForm from "../forms/bank-creation-form"
 import CardCreationForm from "../forms/card-creation-form"
+import PurchaseCreationForm from "../forms/purchase-creation-form"
+import InvestmentCreationForm from "../forms/investment-creation-form"
+import { FaMoneyBill } from "react-icons/fa"
 
-const BankCreationModal = ({ children }: { children: React.ReactNode }) => {
-    const [variant, setvariant] = useState<"BANK" | "CARD">("BANK")
+const PurchaseStocksModal = ({ children }: { children: React.ReactNode }) => {
+    const [variant, setvariant] = useState<"INVESTMENT" | "PURCHASE">("PURCHASE")
     return (
         <Dialog>
         <DialogTrigger asChild>
@@ -40,7 +43,7 @@ const BankCreationModal = ({ children }: { children: React.ReactNode }) => {
                     <Label
                         htmlFor="card"
                         className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                        onClick={() => setvariant("CARD")}
+                        onClick={() => setvariant("PURCHASE")}
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +58,7 @@ const BankCreationModal = ({ children }: { children: React.ReactNode }) => {
                             <rect width="20" height="14" x="2" y="5" rx="2" />
                             <path d="M2 10h20" />
                         </svg>
-                        Card
+                        Purchase
                     </Label>
                 </div>
                 <div>
@@ -67,18 +70,18 @@ const BankCreationModal = ({ children }: { children: React.ReactNode }) => {
                     <Label
                         htmlFor="paypal"
                         className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                        onClick={() => setvariant("BANK")}
+                        onClick={() => setvariant("INVESTMENT")}
                     >
-                        <AiOutlineBank className="mb-3 h-6 w-6" />
-                        Bank
+                        <FaMoneyBill className="mb-3 h-6 w-6" />
+                        Stocks
                     </Label>
                 </div>
 
             </RadioGroup>
-            {variant === "CARD" ?
-            <CardCreationForm variant={variant} /> :
+            {variant === "PURCHASE" ?
+            <PurchaseCreationForm/> :
 
-            <BankCreationForm variant={variant} />
+            <InvestmentCreationForm/>
         }
 
 
@@ -87,4 +90,4 @@ const BankCreationModal = ({ children }: { children: React.ReactNode }) => {
     </Dialog>
     )
 }
-export default BankCreationModal
+export default PurchaseStocksModal

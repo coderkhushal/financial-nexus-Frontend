@@ -51,14 +51,7 @@ export const Signinprovider = ({ children }: { children: React.ReactNode }) => {
   const router= useRouter()
 
   const [User, setUser] = useState<UserCredential | null>(null);
-  useEffect(() => {
 
-
-    if(!User){
-      router.push("/auth/register")
-    }
-
-  }, [])  
   //login with email and password
   const signinwithemailandpassword = (email: string, password: string) =>
     signInWithEmailAndPassword(auth, email, password).then((usercred: UserCredential) => {

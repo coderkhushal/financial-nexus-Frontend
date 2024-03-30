@@ -10,6 +10,7 @@ import PurchaseDetailsComponent from '../components/details-components/purchaseI
 import InvestmentDetailsComponent from '../components/details-components/purchaseInvestment/investment-details-component'
 import { bankdetailsarr, carddetailsarr, loandetailsarr, purchasedetailsarr, investmentdetailsarr } from '@/data/sampledata'
 import BankCreationModal from '../components/creationmodals/bank-creation-moda'
+import PurchaseStocksModal from '../components/creationmodals/purchases-stocks-modal'
 
 const DashBoardPage = () => {
     return (
@@ -20,8 +21,10 @@ const DashBoardPage = () => {
 
                     <CreationCard heading='Add Bank/Card' details='you have currently 3 bank accounts' />
                 </BankCreationModal>
+                <PurchaseStocksModal>
 
                 <CreationCard heading='Add Investment/Purchases' details='you have currently 3 bank accounts' />
+                </PurchaseStocksModal>
                 <CreationCard heading='Add Loan/Emi' details='you have currently 3 bank accounts' />
             </div>
 
