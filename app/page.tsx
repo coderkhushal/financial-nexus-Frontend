@@ -4,7 +4,7 @@ import React from "react"
 export default function Home() {
   return (
     
-<div className="bg-slate-900">
+<div className="bg-slate-900 h-full">
   <div className="bg-gradient-to-b from-orange-600/[.15] via-transparent">
     <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-24 space-y-8">
      
