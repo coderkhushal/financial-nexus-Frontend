@@ -111,7 +111,7 @@ const LoginPage = () => {
 
                 <FormError message={error} />
                 <FormSuccess message={success} />
-                <Social/>
+                <Social variant='LOGIN'/>
         <Button type="submit" className='w-full'>Submit</Button>   
                 
                 

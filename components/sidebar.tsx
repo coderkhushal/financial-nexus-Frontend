@@ -24,8 +24,8 @@ const Sidebar = () => {
                 <div className="my-2 bg-gray-600 h-[1px]"></div>
             </div>
             {routes.map((route, index) => (
-                <Link href={route.route}>
-                    <div key= {index}
+                <Link href={route.route} key={index}>
+                    <div 
                         className={`p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer ${pathname== route.route && "bg-gray-600"}  hover:bg-blue-600 text-white`}
                     >
                         <i className="bi bi-house-door-fill"></i>

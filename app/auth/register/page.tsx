@@ -129,7 +129,7 @@ const RegisterPage = () => {
 
                 <FormError message={error} />
                 <FormSuccess message={success} />
-                <Social/>
+                <Social variant='SIGNUP' />
         <Button type="submit" className='w-full'>Submit</Button>   
                 
                 
