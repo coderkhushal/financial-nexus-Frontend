@@ -6,7 +6,7 @@ const layout = ({children}:{children: React.ReactNode}) => {
   return (
     <div className='w-full h-full flex '>
     <Sidebar/>
-    <div className='p-4'>
+    <div className='py-6 px-4 w-full'>
 
     {children}
     </div>

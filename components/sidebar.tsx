@@ -11,19 +11,21 @@ const Sidebar = () => {
             className="sidebar h-full p-2 w-[300px]   text-center bg-gray-900"
         >
             <div className="text-gray-100 text-xl ">
-                <div className="p-2.5 mt-1 flex items-center h-full">
+                <Link href="/">
+                <div className= " cursor-pointer p-2.5 mt-1 flex items-center h-full">
                     <i className="bi bi-app-indicator px-2 py-1 rounded-md bg-blue-600"></i>
-                    <h1 className="font-bold text-gray-200 text-[15px] ml-3">TailwindCSS</h1>
+                    <h1 className="font-bold text-gray-200 text-[15px] ml-3">Financial Nexus</h1>
                     <i
                         className="bi bi-x cursor-pointer ml-28 lg:hidden"
-
-                    ></i>
+                        
+                        ></i>
                 </div>
+                        </Link>
                 <div className="my-2 bg-gray-600 h-[1px]"></div>
             </div>
             {routes.map((route, index) => (
                 <Link href={route.route}>
-                    <div
+                    <div key= {index}
                         className={`p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer ${pathname== route.route && "bg-gray-600"}  hover:bg-blue-600 text-white`}
                     >
                         <i className="bi bi-house-door-fill"></i>
