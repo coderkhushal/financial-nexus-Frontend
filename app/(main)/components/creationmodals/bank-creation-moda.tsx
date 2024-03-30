@@ -17,13 +17,13 @@ import { BanknoteIcon } from "lucide-react"
 import { useState } from "react"
 import { AiOutlineBank } from "react-icons/ai";
 import BankCreationForm from "../forms/bank-creation-form"
-import { ScrollArea } from "@radix-ui/react-scroll-area"
 
 const BankCreationModal = ({ children }: { children: React.ReactNode }) => {
     const [variant, setvariant] = useState<"BANK" | "CARD">("BANK")
     return (
         <Dialog>
             <DialogTrigger asChild>
+                
                 {children}
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">

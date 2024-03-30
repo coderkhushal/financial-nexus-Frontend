@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 
 import CreationCard from '../components/creationcard'
@@ -33,7 +34,7 @@ const DashBoardPage = () => {
                     <LoanDetailsComponent heading='Loans' loandetailsarr={loandetailsarr}/>
                     <LoanDetailsComponent heading='Emi' loandetailsarr={loandetailsarr}/>
                 </Detailscard>
-                <Detailscard heading="Loan/Emi Details">
+                <Detailscard heading="Purchases/Investments">
                     
                     <PurchaseDetailsComponent heading='Purchases' purchasedetailsarr={purchasedetailsarr}/>
                     <InvestmentDetailsComponent heading='Investments' investmentdetailsarr={investmentdetailsarr}/>
