@@ -110,7 +110,7 @@ const PurchaseCreationForm = () => {
         setPending(true)
 
         console.log(User)
-        const idtoken = await User?._tokenResponse.idToken
+        const idtoken = await User?.user.getIdToken()
         if (idtoken) {
 
             const response = await fetch(`${SERVER}/data-add/add-expense`, {
