@@ -23,8 +23,14 @@ const firebaseConfig = {
 };
 
 type AuthContextType = {
-  signinwithemailandpassword: (email: string, password: string) => Promise<UserCredential | void>;
-  signupwithemailandpassword: (email: string, password: string) => Promise<UserCredential | void>;
+  signinwithemailandpassword: (
+    email: string,
+    password: string
+  ) => Promise<UserCredential | void>;
+  signupwithemailandpassword: (
+    email: string,
+    password: string
+  ) => Promise<UserCredential | void>;
   signinwithgoogle: () => Promise<UserCredential | void>;
   User: UserCredential | null;
 };
@@ -38,53 +44,55 @@ export const siginincontext = createContext<AuthContextType>({
   signupwithemailandpassword: () => Promise.resolve(),
   signinwithemailandpassword: () => Promise.resolve(),
   signinwithgoogle: () => Promise.resolve(),
-  User: null
+  User: null,
 });
 
 export const Signinprovider = ({ children }: { children: React.ReactNode }) => {
-  const router= useRouter()
+  const router = useRouter();
 
   const [User, setUser] = useState<UserCredential | null>(null);
   useEffect(() => {
-    const u = localStorage.getItem("user")
+    const u = localStorage.getItem("user");
     if (u) {
-
-      setUser(
-        JSON.parse(u)
-      )
-      router.push("/dashboard")
+      setUser(JSON.parse(u));
     }
-
-  }, [])  
+  }, []);
   //login with email and password
   const signinwithemailandpassword = (email: string, password: string) =>
-    signInWithEmailAndPassword(auth, email, password).then((usercred: UserCredential) => {
-
-      setUser(usercred);
-      localStorage.setItem("user", JSON.stringify(usercred))
-      return usercred
-    });
+    signInWithEmailAndPassword(auth, email, password).then(
+      (usercred: UserCredential) => {
+        setUser(usercred);
+        localStorage.setItem("user", JSON.stringify(usercred));
+        return usercred;
+      }
+    );
 
   const signupwithemailandpassword = (email: string, password: string) =>
-    createUserWithEmailAndPassword(auth, email, password).then((usercred: UserCredential) => {
-      setUser(usercred);
-      localStorage.setItem("user", JSON.stringify(usercred))
-      return usercred
-    })
+    createUserWithEmailAndPassword(auth, email, password).then(
+      (usercred: UserCredential) => {
+        setUser(usercred);
+        localStorage.setItem("user", JSON.stringify(usercred));
+        return usercred;
+      }
+    );
 
   //login with google
   const signinwithgoogle = () =>
     signInWithPopup(auth, provider).then((usercred) => {
-
       setUser(usercred);
-      localStorage.setItem("user", JSON.stringify(usercred))
+      localStorage.setItem("user", JSON.stringify(usercred));
 
-      return usercred
+      return usercred;
     });
 
   return (
     <siginincontext.Provider
-      value={{ signinwithemailandpassword, signinwithgoogle, signupwithemailandpassword, User }}
+      value={{
+        signinwithemailandpassword,
+        signinwithgoogle,
+        signupwithemailandpassword,
+        User,
+      }}
     >
       {children}
     </siginincontext.Provider>
@@ -92,5 +100,5 @@ export const Signinprovider = ({ children }: { children: React.ReactNode }) => {
 };
 
 export const userfirebase = () => {
-  return useContext(siginincontext)
-}
+  return useContext(siginincontext);
+};
