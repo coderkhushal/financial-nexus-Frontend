@@ -1,16 +1,27 @@
+"use client"
 import React from 'react'
 import { FaGithub } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
 import { Button } from './ui/button'
 import { userfirebase } from '@/context/firebase'
 import { useRouter } from 'next/navigation'
-const Social = ({variant}:{variant: "LOGIN" | "SIGNUP"}) => {
+import { register } from '@/actions/register'
+const Social =({variant}:{variant: "LOGIN" | "SIGNUP"}) => {
   const router= useRouter()
   const {signinwithgoogle} =userfirebase()
   const handlegoogle=async()=>{
     signinwithgoogle().then((user)=>{
+      
       if(user?.user){
-        router.push("/dashboard")
+        if(variant=="SIGNUP"){
+            register(user).then(()=>{
+
+              router.push("/dashboard")
+            })
+        }
+        else{
+          router.push("/dashboard")
+        }
       }
       
     })

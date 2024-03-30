@@ -22,7 +22,9 @@ import FormSuccess from '@/components/form-success'
 import Social from '@/components/social'
 import { register } from '@/actions/register'
 import { userfirebase } from '@/context/firebase'
+import { useRouter } from 'next/navigation'
 const RegisterPage = () => {
+    const router= useRouter()
     const [error, seterror]= useState<string | undefined>(undefined)
     const [success, setsuccess]= useState<string | undefined>(undefined)
     const [Pending , setPending] = useState(false)
@@ -47,6 +49,9 @@ const RegisterPage = () => {
             let usercred = await signupwithemailandpassword(values.email, values.password)
             register(usercred,values.username)
             .then((data)=>{
+                if(data.success){
+                    router.push("/dashboard")
+                }
                 setsuccess(data.success)
                 seterror(data.error)
                 setPending(false)

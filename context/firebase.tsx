@@ -10,7 +10,9 @@ import {
   signInWithPopup,
   UserCredential,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
+
 import { useRouter } from "next/navigation";
 const firebaseConfig = {
   apiKey: "AIzaSyA4zcVGS8WfwIvRQUhKsTB5-x78GRdGWTg",
@@ -26,6 +28,8 @@ type AuthContextType = {
   signinwithemailandpassword: (email: string, password: string) => Promise<UserCredential | void>;
   signupwithemailandpassword: (email: string, password: string) => Promise<UserCredential | void>;
   signinwithgoogle: () => Promise<UserCredential | void>;
+  handlesignout: ()=>Promise<{message:string}>
+  setUser:(user:UserCredential | null)=>void
   User: UserCredential | null;
 };
 
@@ -38,6 +42,8 @@ export const siginincontext = createContext<AuthContextType>({
   signupwithemailandpassword: () => Promise.resolve(),
   signinwithemailandpassword: () => Promise.resolve(),
   signinwithgoogle: () => Promise.resolve(),
+  handlesignout: ()=>Promise.resolve({message: ""}),
+  setUser:()=>{},
   User: null
 });
 
@@ -46,13 +52,10 @@ export const Signinprovider = ({ children }: { children: React.ReactNode }) => {
 
   const [User, setUser] = useState<UserCredential | null>(null);
   useEffect(() => {
-    const u = localStorage.getItem("user")
-    if (u) {
 
-      setUser(
-        JSON.parse(u)
-      )
-      router.push("/dashboard")
+
+    if(!User){
+      router.push("/auth/register")
     }
 
   }, [])  
@@ -82,9 +85,17 @@ export const Signinprovider = ({ children }: { children: React.ReactNode }) => {
       return usercred
     });
 
+  const handlesignout=()=> signOut(auth).then(()=>{
+    localStorage.removeItem("user")
+    setUser(null)
+    router.push("/")
+    
+    return {message:"user signed out"}
+  
+  })
   return (
     <siginincontext.Provider
-      value={{ signinwithemailandpassword, signinwithgoogle, signupwithemailandpassword, User }}
+      value={{ signinwithemailandpassword, signinwithgoogle,setUser , handlesignout, signupwithemailandpassword, User }}
     >
       {children}
     </siginincontext.Provider>

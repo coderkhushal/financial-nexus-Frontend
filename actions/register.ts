@@ -5,7 +5,7 @@ import { UserCredential } from "firebase/auth";
 const SERVER= "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io/"
 
 
-export const register= async (usercred: UserCredential | void, name: string )=>{
+export const register= async (usercred: UserCredential | void, name?: string )=>{
     if(!usercred){
         return {"error":"Email already in user"}
     }
@@ -13,7 +13,7 @@ export const register= async (usercred: UserCredential | void, name: string )=>{
         name = usercred.user.displayName
     }
     
-    let firebase_user_id= await usercred.user.getIdToken()
+    let firebase_user_id= await usercred.user.uid
     let email =await  usercred.user.email
     try{
 

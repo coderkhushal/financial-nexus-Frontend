@@ -4,10 +4,7 @@ export const routes= [
         name:"Home",
 
     },
-    {
-        route:"/transactions",
-        name:"Transactions ",
-    },
+
     {
         route:"/profile",
         name:"Profile ",

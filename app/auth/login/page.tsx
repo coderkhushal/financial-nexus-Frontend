@@ -1,6 +1,6 @@
 "use client"
 import CardWrapper from '@/components/card-wrapper'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { LoginSchema } from '@/schemas'
@@ -24,11 +24,20 @@ import { userfirebase } from '@/context/firebase'
 import { useRouter } from 'next/navigation'
 const LoginPage = () => {
     const router= useRouter()
-    const {signinwithemailandpassword} = userfirebase()
+    const {signinwithemailandpassword, setUser} = userfirebase()
     const [error, seterror]= useState<string | undefined>(undefined)
     const [success, setsuccess]= useState<string | undefined>(undefined)
-
     const [Pending , setPending] = useState(false)
+
+    useEffect(()=>{
+        const user= localStorage.getItem("user")
+        const parsed =  JSON.parse(user!)
+        if(user){
+            setUser(parsed)
+            router.push("/dashboard")
+        
+        }
+    },[])
 
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver : zodResolver(LoginSchema),
