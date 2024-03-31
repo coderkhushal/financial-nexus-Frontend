@@ -14,7 +14,7 @@ const MainLayout = ({children}:{children: React.ReactNode}) => {
     {/* <Suspense fallback={<Loading/>}> */}
 
       
-    <div className='py-6 px-4 w-full'>
+    <div className='py-6 px-4 w-full h-full overflow-y-scroll'>
 
 
     {children}
