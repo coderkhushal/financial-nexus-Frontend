@@ -1,4 +1,4 @@
-
+"use client"
 import Sidebar from '@/components/sidebar'
 import { ScrollArea } from '@radix-ui/react-scroll-area'
 
