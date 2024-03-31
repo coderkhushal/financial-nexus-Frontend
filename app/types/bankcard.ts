@@ -1,8 +1,8 @@
 export interface BankDetails{
     name: string
-    bankname: string
-    amount : number
-    disable : boolean
+    bank_name: string
+    balance: number
+    disabled : boolean
     remarks : string
 }
 export interface CardDetails{

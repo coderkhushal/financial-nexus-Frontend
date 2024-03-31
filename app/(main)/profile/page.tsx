@@ -12,48 +12,45 @@ import {
 import Personal from "@/app/(main)/profile/components/Personal";
 import TableContainer from "@/app/(main)/profile/components/TableContainer";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
 import { userfirebase } from "@/context/firebase";
 import { getHeaders } from "@/helpers/getHeaders";
-import { fetchBanks, fetchCards } from "./Fetch/apis";
+import { fetchdata } from "./Fetch/apis";
+import EmiLoanTable from "./components/EmiLoanTable";
+import AssetFdTable from "./components/AssetFdTable";
 const SERVER =
   "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io/";
 
 const page = () => {
-  const { User } = userfirebase();
-  const [Banks, setBanks] = useState(["1"]);
-  const [Cards, setCards] = useState(["1"]);
-  const firebase_user_id = User?._tokenResponse.idToken;
+  const { auth } = userfirebase();
+  const [Banks, setBanks] = useState(null);
+  const [Cards, setCards] = useState(null);
+  const [Emis, setEmis] = useState(null);
+  const [Loans, setLoans] = useState(null);
+  const [Fds, setFds] = useState(null);
+  const [Assets, setAssets] = useState(null);
+
+  const fetchall = async () => {
+    if (auth.currentUser) {
+      const dataBanks = await fetchdata("/data-get/get-banks/");
+      setBanks(dataBanks);
+      const dataCards = await fetchdata("/data-get/get-cards/");
+      setCards(dataCards);
+      const dataEmis = await fetchdata("/data-get/get-emis/");
+      setEmis(dataEmis);
+      const dataLoans = await fetchdata("/data-get/get-loans/");
+      setLoans(dataLoans);
+      const dataFds = await fetchdata("/data-get/get-fds/");
+      setFds(dataFds);
+      const dataAssets = await fetchdata("/data-get/get-assets/");
+      setAssets(dataAssets);
+    }
+  };
 
   useEffect(() => {
-    const fetchall = async () => {
-      const dataBanks = await fetchBanks(firebase_user_id);
-      setBanks(dataBanks);
-      const dataCards = await fetchCards(firebase_user_id);
-      setCards(dataCards);
-    };
-    if (firebase_user_id) {
+    if (auth.currentUser) {
       fetchall();
-      console.log(Cards);
     }
-  }, [firebase_user_id]);
-  console.log(Cards);
-  console.log(Banks);
+  }, [auth.currentUser]);
 
   return (
     <div className="">
@@ -62,14 +59,14 @@ const page = () => {
           <Card>
             <CardHeader>
               <CardTitle>Purchases/Investments</CardTitle>
-              <TableContainer />
+              <AssetFdTable data={{ Assets, Fds }} />
             </CardHeader>
           </Card>
 
           <Card>
             <CardHeader>
               <CardTitle>Loans/EMI</CardTitle>
-              <TableContainer />
+              <EmiLoanTable data={{ Emis, Loans }} />
             </CardHeader>
           </Card>
 
@@ -80,7 +77,6 @@ const page = () => {
             </CardHeader>
           </Card>
         </div>
-        <Personal />
       </div>
     </div>
   );

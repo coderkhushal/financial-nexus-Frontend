@@ -6,7 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
+const SERVER =
+  "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,27 +15,29 @@ import EditProfile from "./EditProfile";
 import { userfirebase } from "@/context/firebase";
 import { getHeaders } from "@/helpers/getHeaders";
 
+type detailtype = {
+  name: string;
+  email: string;
+};
+
 const Personal = () => {
-  const [detail, setDetail] = useState("");
-  const { User } = userfirebase();
-  const firebase_user_id = User?._tokenResponse.idToken;
+  const [detail, setDetail] = useState<detailtype | null>();
+  const { auth } = userfirebase();
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (firebase_user_id) {
-        const res = await fetch(
-          "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io/user/get-user/",
-          { method: "GET", headers: getHeaders(firebase_user_id) }
-        );
-        const data = await res.json();
-        setDetail(data);
-      }
-    };
-
-    if (firebase_user_id) {
-      fetchProfile();
+  const fetchProfile = async () => {
+    if (auth.currentUser) {
+      const res = await fetch(`${SERVER}/user/get-user/`, {
+        method: "GET",
+        headers: await getHeaders(),
+      });
+      const data = await res.json();
+      setDetail(data);
+      console.log(data);
     }
-  }, [firebase_user_id]);
+  };
+  useEffect(() => {
+    fetchProfile();
+  }, [auth.currentUser]);
 
   return (
     <Card>
@@ -42,7 +45,7 @@ const Personal = () => {
         <CardTitle>Personal Details</CardTitle>
         <CardDescription>
           <div className="flex justify-between">
-            <h2>Secure and Private</h2> <EditProfile />
+            Secure and Private <EditProfile />
           </div>
         </CardDescription>
       </CardHeader>
@@ -53,7 +56,7 @@ const Personal = () => {
             id="name"
             type="text"
             className="w-full outline-none focus:outline-none shadow-none"
-            defaultValue={detail.name}
+            defaultValue={detail?.name}
             readOnly
           />
         </div>
@@ -63,7 +66,7 @@ const Personal = () => {
             id="name"
             type="text"
             className="w-full"
-            defaultValue={detail.email}
+            defaultValue={detail?.email}
             readOnly
           />
         </div>
@@ -71,8 +74,9 @@ const Personal = () => {
           <Label htmlFor="description">Description</Label>
           <Textarea
             id="description"
-            defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl nec ultricies ultricies, nunc nisl ultricies nunc, nec ultricies nunc nisl nec nunc."
+            defaultValue="Soon you will be able to add description"
             className="min-h-32"
+            readOnly
           />
         </div>
       </CardContent>

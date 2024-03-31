@@ -1,6 +1,6 @@
 "use client"
-import React, { useState } from 'react'
-
+import React, { useEffect, useState } from 'react'
+const SERVER= "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io/"
 import CreationCard from '../components/creationcard'
 import Detailscard from '../components/Detailscard'
 import BanksDetailsComponent from '../components/details-components/bankCard/bank-details-component'
@@ -8,11 +8,72 @@ import CardDetailsComponent from '../components/details-components/bankCard/card
 import LoanDetailsComponent from '../components/details-components/loan/loan-details-component'
 import PurchaseDetailsComponent from '../components/details-components/purchaseInvestment/purchase-details-component'
 import InvestmentDetailsComponent from '../components/details-components/purchaseInvestment/investment-details-component'
-import { bankdetailsarr, carddetailsarr, loandetailsarr, purchasedetailsarr, investmentdetailsarr } from '@/data/sampledata'
+import { carddetailsarr, loandetailsarr, purchasedetailsarr, investmentdetailsarr } from '@/data/sampledata'
 import BankCreationModal from '../components/creationmodals/bank-creation-moda'
 import PurchaseStocksModal from '../components/creationmodals/purchases-stocks-modal'
 
+import { userfirebase } from '@/context/firebase'
+import { useRouter } from 'next/navigation'
+type fetchdetailstype= {url: string, variant: "BANK"| "LOAN" | "CARD" | "EMI" | "PURCHASE" | "INVESTMENT"}
 const DashBoardPage = () => {
+    const {auth} = userfirebase()
+    const router = useRouter()
+    if(!auth.currentUser){
+        router.push("/auth/login")
+    
+    }
+    const [bankdetails, setbankdetails] = useState([])
+    const [carddetails, setcarddetails] = useState([])
+    const [loandetails, setloandetails] = useState([])
+    const [emidetails, setemidetails] = useState([])
+    const [purchasedetails, setpurchasedetails] = useState([])
+    const [investmentdetails, setinvestmentdetails] = useState([])
+    
+    const fetchdetails=async({url, variant}: fetchdetailstype )=>{
+        const idtoken = await auth.currentUser?.getIdToken()
+        const res=await fetch(`${SERVER}/data-get/${url}/`, {
+            headers:                {
+                "Authorization": "Bearer " + idtoken,
+                'Content-Type': 'application/json'
+            },
+
+        })
+        const data=await res.json()
+        console.log(data)
+        switch (variant){
+            case "BANK":
+                setbankdetails(data)
+                break;
+            case "LOAN":
+                setloandetails(data)
+                break;
+            case "CARD":
+                setcarddetails(data)
+                break;
+            case "PURCHASE":
+                setpurchasedetails(data)
+                break;
+            case "INVESTMENT":
+                setinvestmentdetails(data)
+                break;
+            case "EMI":
+                setemidetails(data)
+                break;
+        }
+        
+        
+
+    }
+
+
+    useEffect(()=>{
+        fetchdetails({url:"get-banks", variant:"BANK"});
+        fetchdetails({url:"get-cards", variant:"CARD"});
+        fetchdetails({url:"get-loans", variant:"LOAN"});
+        fetchdetails({url:"get-emis", variant:"EMI"});
+        fetchdetails({url:"get-stocks", variant:"INVESTMENT"});
+        
+    }, [auth.currentUser])
     return (
         <div className='w-full gap-10 h-full flex flex-col'>
             <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 w-full'>
@@ -30,17 +91,17 @@ const DashBoardPage = () => {
 
             <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 w-full'>
                 <Detailscard heading="Bank/Card Details">
-                    <BanksDetailsComponent heading='Bank Details' bankdetailsarr={bankdetailsarr} />
-                    <CardDetailsComponent heading='Card Details' carddetailsarr={carddetailsarr} />
+                    <BanksDetailsComponent heading='Bank Details' bankdetailsarr={bankdetails} />
+                    <CardDetailsComponent heading='Card Details' carddetailsarr={carddetails} />
                 </Detailscard>
                 <Detailscard heading="Loan/Emi Details">
-                    <LoanDetailsComponent heading='Loans' loandetailsarr={loandetailsarr} />
-                    <LoanDetailsComponent heading='Emi' loandetailsarr={loandetailsarr} />
+                    <LoanDetailsComponent heading='Loans' loandetailsarr={loandetails} />
+                    <LoanDetailsComponent heading='Emi' loandetailsarr={emidetails} />
                 </Detailscard>
                 <Detailscard heading="Purchases/Investments">
 
-                    <PurchaseDetailsComponent heading='Purchases' purchasedetailsarr={purchasedetailsarr} />
-                    <InvestmentDetailsComponent heading='Investments' investmentdetailsarr={investmentdetailsarr} />
+                    <PurchaseDetailsComponent heading='Purchases' purchasedetailsarr={purchasedetails} />
+                    <InvestmentDetailsComponent heading='Investments' investmentdetailsarr={investmentdetails} />
                 </Detailscard>
 
             </div>

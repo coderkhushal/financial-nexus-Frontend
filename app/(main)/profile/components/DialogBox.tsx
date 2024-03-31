@@ -16,14 +16,30 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { deleteData } from "../Fetch/apis";
 import { userfirebase } from "@/context/firebase";
+const SERVER =
+  "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io/";
+import { getHeaders } from "@/helpers/getHeaders";
 
 function DialogBox({ endpoint }: { endpoint: string }) {
-  const { User } = userfirebase();
-  const firebase_user_id = User?._tokenResponse.idToken;
   const deletedata = async () => {
     console.log(endpoint);
-    const res = await deleteData(firebase_user_id, endpoint);
-    console.log(res);
+    try {
+      const res = await fetch(`${SERVER}${endpoint}`, {
+        method: "GET",
+        headers: await getHeaders(),
+      });
+      if (!res.ok) {
+        throw new Error("Failed to delete data");
+      }
+      if (res.status === 204) {
+        console.log("Data deleted successfully");
+      } else {
+        const data = "what";
+        console.log(data);
+      }
+    } catch (error) {
+      console.error("Error deleting data:", error);
+    }
   };
 
   return (
@@ -48,9 +64,11 @@ function DialogBox({ endpoint }: { endpoint: string }) {
               Close
             </Button>
           </DialogClose>
-          <Button type="button" variant="delete" onClick={deletedata}>
-            Delete
-          </Button>
+          <DialogClose asChild>
+            <Button type="button" variant="delete" onClick={deletedata}>
+              Delete
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -115,7 +115,7 @@ const PurchaseCreationForm = () => {
 
             const response = await fetch(`${SERVER}/data-add/add-expense`, {
                 method: "POST",
-                headers: getHeaders(idtoken),
+                headers: await getHeaders(),
                 body: JSON.stringify({
                     name: values.name,
                     prices: values.prices,

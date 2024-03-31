@@ -35,6 +35,7 @@ const formSchema = z.object({
 })
 const CardCreationForm = ({ variant }: { variant: "BANK" | "CARD" }) => {
     const {User} = userfirebase()
+    const {auth} = userfirebase()
     const [error, seterror] = useState<string | undefined>(undefined)
     const [success, setsuccess] = useState<string | undefined>(undefined)
     const [Pending, setPending] = useState(false)
@@ -49,23 +50,26 @@ const CardCreationForm = ({ variant }: { variant: "BANK" | "CARD" }) => {
     })
 
     // 2. Define a submit handler.
-    async function banksubmit(values: z.infer<typeof formSchema>) {
+    async function cardsubmit(values: z.infer<typeof formSchema>) {
         seterror("")
         setsuccess("")
         setPending(true)
  
-        console.log(User)
-        const idtoken = await User?.user?.getIdToken()
-        if(idtoken){
-            
+        console.log("this is card function")
+        const idtoken = await auth.currentUser?.getIdToken()
+        
+        if(idtoken ){
             const response = await fetch(`${SERVER}/data-add/add-card`, {
                 method: "POST",
-                headers: getHeaders(idtoken),
+                headers:       {
+                    "Authorization": "Bearer " + idtoken,
+                    'Content-Type': 'application/json'
+                },
                 body:JSON.stringify({   
-                    name:values.name,
-                    card_name: values.card_name,
-                    card_limit: values.card_limit,
-                    remarks: values.remarks
+                    "name":values.name,
+                    "card_name": values.card_name,
+                    "card_limit": parseFloat(values.card_limit.toString()),
+                    "remarks": values.remarks
 
                 })
             })
@@ -87,7 +91,7 @@ const CardCreationForm = ({ variant }: { variant: "BANK" | "CARD" }) => {
 
 
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(banksubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(cardsubmit)} className="space-y-8">
                 <FormField
                     control={form.control}
                     name="name"

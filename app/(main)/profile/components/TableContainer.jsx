@@ -13,12 +13,27 @@ import DialogBox from "@/app/(main)/profile/components/DialogBox";
 import EditBox from "./EditBox";
 
 const TableContainer = ({ data }) => {
+  const formatBalance = (number) => {
+    const numString = number?.toString();
+    const numDigits = numString.length;
+
+    if (numDigits > 7) {
+      return "High Balance";
+    } else {
+      // Add commas for better readability
+      const formattedBalance = numString.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return `₹${formattedBalance}`; // Add the rupee sign
+    }
+  };
+
   const Cards = data?.Cards;
   const Banks = data?.Banks;
-  console.log(Cards);
   return (
     <Table>
-      <TableCaption>A list of your recent Cards.</TableCaption>
+      <TableCaption>
+        A list of your recent Cards. <br /> *Note account with balance greater
+        than 1 million is considered High Balance Account
+      </TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="w-[100px]"> Name</TableHead>
@@ -35,13 +50,43 @@ const TableContainer = ({ data }) => {
                   <TableCell className="font-medium">
                     {Card.card_name}
                   </TableCell>
-                  <TableCell>{Card.balance}</TableCell>
+                  <TableCell>
+                    {Card.balance && formatBalance(Card.balance)}
+                  </TableCell>
                   <TableCell>
                     {Card.disabled ? <p>Disabled</p> : <p>Active</p>}
                   </TableCell>
                   <TableCell className="text-right">
+                    <DialogBox endpoint={`data-edit/${Card.id}/delete-card/`} />
+                  </TableCell>
+                </TableRow>
+              </>
+            );
+          })
+        ) : (
+          <TableRow>
+            <TableCell>No</TableCell>
+            <TableCell>Data</TableCell>
+            <TableCell>Available</TableCell>
+          </TableRow>
+        )}
+        {Banks ? (
+          Banks.map((Bank) => {
+            return (
+              <>
+                <TableRow>
+                  <TableCell className="font-medium">
+                    {Bank.bank_name}
+                  </TableCell>
+                  <TableCell>
+                    {Bank.balance && formatBalance(Bank.balance)}
+                  </TableCell>
+                  <TableCell>
+                    {Bank.disabled ? <p>Disabled</p> : <p>Active</p>}
+                  </TableCell>
+                  <TableCell className="text-right">
                     <DialogBox
-                      endpoint={`/data-edit/${Card.id}/delete-card/`}
+                      endpoint={`/data-edit/${Bank.id}/delete-bank/`}
                     />
                   </TableCell>
                 </TableRow>
@@ -49,7 +94,11 @@ const TableContainer = ({ data }) => {
             );
           })
         ) : (
-          <p>Loading...</p>
+          <TableRow>
+            <TableCell>No</TableCell>
+            <TableCell>Data</TableCell>
+            <TableCell>Available</TableCell>
+          </TableRow>
         )}
       </TableBody>
     </Table>
