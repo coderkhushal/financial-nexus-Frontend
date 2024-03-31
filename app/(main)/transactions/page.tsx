@@ -4,6 +4,16 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 const SERVER= "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io/"
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+
 const Page = () => {
   const {auth } = userfirebase()
   const router = useRouter()

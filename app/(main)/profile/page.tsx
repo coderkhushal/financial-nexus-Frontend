@@ -17,6 +17,7 @@ import { getHeaders } from "@/helpers/getHeaders";
 import { fetchdata } from "./Fetch/apis";
 import EmiLoanTable from "./components/EmiLoanTable";
 import AssetFdTable from "./components/AssetFdTable";
+import { useRouter } from "next/navigation";
 const SERVER =
   "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io/";
 
@@ -28,8 +29,9 @@ const Page = () => {
   const [Loans, setLoans] = useState(null);
   const [Fds, setFds] = useState(null);
   const [Assets, setAssets] = useState(null);
-
+const router= useRouter()
   const fetchall = async () => {
+    
     if (auth.currentUser) {
       const dataBanks = await fetchdata("/data-get/get-banks/");
       setBanks(dataBanks);
@@ -50,7 +52,10 @@ const Page = () => {
     if (auth.currentUser) {
       fetchall();
     }
-  }, [auth.currentUser]);
+    else{
+      router.push("/auth/login")
+    }
+  }, [auth.currentUser, router]);
 
   return (
     <div className="">
