@@ -24,20 +24,12 @@ import { userfirebase } from '@/context/firebase'
 import { useRouter } from 'next/navigation'
 const LoginPage = () => {
     const router= useRouter()
-    const {signinwithemailandpassword, setUser} = userfirebase()
+    const {signinwithemailandpassword} = userfirebase()
     const [error, seterror]= useState<string | undefined>(undefined)
     const [success, setsuccess]= useState<string | undefined>(undefined)
     const [Pending , setPending] = useState(false)
 
-    useEffect(()=>{
-        const user= localStorage.getItem("user")
-        const parsed =  JSON.parse(user!)
-        if(user){
-            setUser(parsed)
-            router.push("/dashboard")
-        
-        }
-    },[])
+
 
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver : zodResolver(LoginSchema),

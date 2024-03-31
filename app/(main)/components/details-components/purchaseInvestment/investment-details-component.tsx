@@ -10,7 +10,7 @@ const InvestmentDetailsComponent= ({ heading, investmentdetailsarr }: PurchaseDe
   return (
     <div className='flex flex-col gap-2 my-2'>
       <h1 className='text-xl font-semibold mb-1'>{heading}</h1>
-      {investmentdetailsarr ?
+      {investmentdetailsarr && investmentdetailsarr.length>0 ?
         investmentdetailsarr.map((investment, index) => (
           <div
             key={index}

@@ -11,6 +11,7 @@ import {
   UserCredential,
   signInWithEmailAndPassword,
   signOut,
+  Auth,
 } from "firebase/auth";
 
 import { useRouter } from "next/navigation";
@@ -36,12 +37,14 @@ type AuthContextType = {
   signinwithgoogle: () => Promise<UserCredential | void>;
   handlesignout: () => Promise<{ message: string }>;
   setUser: (user: UserCredential | null) => void;
+  auth : Auth;
   User: UserCredential | null;
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+export const auth = getAuth(app);
+
 const provider = new GoogleAuthProvider();
 
 export const siginincontext = createContext<AuthContextType>({
@@ -49,7 +52,8 @@ export const siginincontext = createContext<AuthContextType>({
   signinwithemailandpassword: () => Promise.resolve(),
   signinwithgoogle: () => Promise.resolve(),
   handlesignout: () => Promise.resolve({ message: "" }),
-  setUser: () => {},
+  setUser: () => { },
+  auth : auth,
   User: null,
 });
 
@@ -106,7 +110,9 @@ export const Signinprovider = ({ children }: { children: React.ReactNode }) => {
         signinwithgoogle,
         signupwithemailandpassword,
         setUser,
+        handlesignout,
         User,
+        auth
       }}
     >
       {children}

@@ -60,7 +60,7 @@ const InvestmentCreationForm = () => {
             
             const response = await fetch(`${SERVER}/data-add/add-card`, {
                 method: "POST",
-                headers: getHeaders(idtoken),
+                headers: await getHeaders(),
                 body:JSON.stringify({   
                     name:values.name,
                     card_name: values.card_name,

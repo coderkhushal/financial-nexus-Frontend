@@ -8,7 +8,7 @@ const CardDetailsComponent = ({ heading, carddetailsarr }: BankCardDetailsProps)
   return (
     <div className='flex flex-col gap-2 mt-2'>
       <h1 className='text-xl font-semibold mb-1'>{heading}</h1>
-      {carddetailsarr ?
+      {carddetailsarr && carddetailsarr.length>0 ?
         carddetailsarr.map((card, index) => (
           <div
             key={index}
