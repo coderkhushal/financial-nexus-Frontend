@@ -14,8 +14,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { deleteData } from "../Fetch/apis";
+import { userfirebase } from "@/context/firebase";
 
-function DialogBox() {
+function DialogBox({ endpoint }: { endpoint: string }) {
+  const { User } = userfirebase();
+  const firebase_user_id = User?._tokenResponse.idToken;
+  const deletedata = async () => {
+    console.log(endpoint);
+    const res = await deleteData(firebase_user_id, endpoint);
+    console.log(res);
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -38,7 +48,7 @@ function DialogBox() {
               Close
             </Button>
           </DialogClose>
-          <Button type="button" variant="delete">
+          <Button type="button" variant="delete" onClick={deletedata}>
             Delete
           </Button>
         </DialogFooter>

@@ -21,7 +21,6 @@ const Personal = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      console.log(firebase_user_id);
       if (firebase_user_id) {
         const res = await fetch(
           "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io/user/get-user/",
@@ -29,8 +28,6 @@ const Personal = () => {
         );
         const data = await res.json();
         setDetail(data);
-
-        console.log(data);
       }
     };
 
