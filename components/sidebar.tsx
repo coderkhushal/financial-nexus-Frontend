@@ -27,33 +27,21 @@ const Sidebar = () => {
                 </Link>
                 <div className="my-2 bg-gray-600 h-[1px]"></div>
             </div>
-            {/* {routes.map((route, index) => (
+            {routes.map((route, index) => (
                 <Link href={route.route} key={index}>
-                    <div
-                        className={`p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer ${pathname == route.route && "bg-gray-600"}  hover:bg-blue-600 text-white`}
-                    >
-                        <i className="bi bi-house-door-fill"></i>
-                        <span className="text-[15px] ml-4 text-gray-200 font-bold">{route.name}</span>
-                    </div>
-                </Link>
-            ))}  */}
+                    <a>
 
-            <Link href={"dashboard"} >
-                <div
-                    className={`p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer ${pathname == "/dashboard" && "bg-gray-600"}  hover:bg-blue-600 text-white`}
-                >
-                    <i className="bi bi-house-door-fill"></i>
-                    <span className="text-[15px] ml-4 text-gray-200 font-bold">Dashboard</span>
-                </div>
-            </Link>
-            <Link href={"profile"} >
-                <div
-                    className={`p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer ${pathname == "/profile" && "bg-gray-600"}  hover:bg-blue-600 text-white`}
-                >
-                    <i className="bi bi-house-door-fill"></i>
-                    <span className="text-[15px] ml-4 text-gray-200 font-bold">Profile</span>
-                </div>
-            </Link>
+                        <div
+                            className={`p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer ${pathname == route.route && "bg-gray-600"}  hover:bg-blue-600 text-white`}
+                        >
+                            <i className="bi bi-house-door-fill"></i>
+                            <span className="text-[15px] ml-4 text-gray-200 font-bold">{route.name}</span>
+                        </div>
+                    </a>
+                </Link>
+            ))}
+
+
             <div
                 className={`p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer bottom-3  absolute  text-white`}
                 onClick={handlesignout}
