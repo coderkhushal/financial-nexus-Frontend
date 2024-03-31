@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { date, z } from "zod"
-const SERVER= "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io/"
+const SERVER= "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -22,7 +22,8 @@ import FormSuccess from "@/components/form-success"
 import { getHeaders } from "@/helpers/getHeaders"
 import { userfirebase } from "@/context/firebase"
 import { ScrollArea } from "@radix-ui/react-scroll-area"
-
+import axios from "axios"
+import { useDashboard } from "@/context/dashboard"
 const formSchema = z.object({
     name: z.string().min(1, {
         message: "name cannot be empyt",
@@ -30,12 +31,13 @@ const formSchema = z.object({
     card_name: z.string().min(1, {
         message: "Bank name is required.",
     }),
-    card_limit: z.number(),
+    card_limit: z.string(),
     remarks: z.string()
 })
 const CardCreationForm = ({ variant }: { variant: "BANK" | "CARD" }) => {
-    const {User} = userfirebase()
+
     const {auth} = userfirebase()
+    const {refresh} = useDashboard()
     const [error, seterror] = useState<string | undefined>(undefined)
     const [success, setsuccess] = useState<string | undefined>(undefined)
     const [Pending, setPending] = useState(false)
@@ -44,13 +46,14 @@ const CardCreationForm = ({ variant }: { variant: "BANK" | "CARD" }) => {
         defaultValues: {
             name: "",
             card_name: "",
-            card_limit: 0,
+            card_limit: "0",
             remarks: "",
         },
     })
 
     // 2. Define a submit handler.
     async function cardsubmit(values: z.infer<typeof formSchema>) {
+        console.log("this is card function")
         seterror("")
         setsuccess("")
         setPending(true)
@@ -59,23 +62,24 @@ const CardCreationForm = ({ variant }: { variant: "BANK" | "CARD" }) => {
         const idtoken = await auth.currentUser?.getIdToken()
         
         if(idtoken ){
-            const response = await fetch(`${SERVER}/data-add/add-card`, {
-                method: "POST",
-                headers:       {
+            console.log(idtoken)
+
+            let response = await axios.post(SERVER + "/data-add/add-card/", {
+                "name": values.name,
+                "card_name": values.card_name,
+                "card_limit": parseFloat(values.card_limit),
+                "remarks": values.remarks
+            }, {
+                headers:
+                {
                     "Authorization": "Bearer " + idtoken,
                     'Content-Type': 'application/json'
-                },
-                body:JSON.stringify({   
-                    "name":values.name,
-                    "card_name": values.card_name,
-                    "card_limit": parseFloat(values.card_limit.toString()),
-                    "remarks": values.remarks
-
-                })
-            })
+                }
+            });
             if(response.status==200){
                 setsuccess("Added Successfully")
                 setPending(false)
+                refresh({variant:"CARD"})
                 
             }
             else{

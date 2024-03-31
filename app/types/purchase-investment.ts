@@ -1,10 +1,7 @@
 export interface Investment{
-    quantity: number
-    code?: string
-    name: string
-    
-    stockprice:number
-    remarks: string    
+    remarks: string   
+    symbol: string
+    quantity_left: string 
 }
 export interface Purchase{
     name:string

@@ -9,15 +9,10 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 import { Label } from "@/components/ui/label"
-import { BanknoteIcon } from "lucide-react"
 import { useState } from "react"
-import { AiOutlineBank } from "react-icons/ai";
-import BankCreationForm from "../forms/bank-creation-form"
-import CardCreationForm from "../forms/card-creation-form"
 import PurchaseCreationForm from "../forms/purchase-creation-form"
 import InvestmentCreationForm from "../forms/investment-creation-form"
 import { FaMoneyBill } from "react-icons/fa"
@@ -34,7 +29,7 @@ const PurchaseStocksModal = ({ children }: { children: React.ReactNode }) => {
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-                <DialogTitle>Add Bank/Card Details</DialogTitle>
+                <DialogTitle>Add Purchase/stocks Details</DialogTitle>
 
             </DialogHeader>
             <RadioGroup defaultValue="card" className="grid grid-cols-3 gap-4">

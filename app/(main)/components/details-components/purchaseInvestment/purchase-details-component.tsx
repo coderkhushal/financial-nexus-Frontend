@@ -4,7 +4,7 @@ import { Purchase} from '@/app/types/purchase-investment'
 import React from 'react'
 interface PurchaseDetailsComponentProps {
   heading: string
-  purchasedetailsarr?: Purchase[]
+  purchasedetailsarr: Purchase[] | null
 }
 const PurchaseDetailsComponent= ({ heading, purchasedetailsarr }: PurchaseDetailsComponentProps) => {
   return (
@@ -21,12 +21,12 @@ const PurchaseDetailsComponent= ({ heading, purchasedetailsarr }: PurchaseDetail
               <p className="text-sm font-medium leading-none">
                 {purchase.name}
               </p>
-              <p className="text-sm text-muted-foreground">
+              {/* <p className="text-sm text-muted-foreground">
                 Payment: {purchase.paymentoption}
               </p>
               <p className="text-sm text-muted-foreground">
                 Amount : {purchase.amount}
-              </p>
+              </p> */}
             </div>
           </div>
         ))  :

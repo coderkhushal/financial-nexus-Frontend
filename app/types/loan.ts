@@ -1,7 +1,8 @@
 export interface Loan{
-    interest: number
+    bank_name:string
     amount: number
-    monthly : number
+    monthly ?: number
     remarks: string
+    paid: 0 | 1
     
 }

@@ -2,7 +2,7 @@ import { BankDetails } from '@/app/types/bankcard'
 import React from 'react'
 interface BankCardDetailsProps {
   heading: string
-  bankdetailsarr?: BankDetails[]
+  bankdetailsarr: BankDetails[] | null
 }
 const BanksDetailsComponent = ({ heading, bankdetailsarr }: BankCardDetailsProps) => {
   return (

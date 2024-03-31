@@ -1,5 +1,6 @@
 
 import Sidebar from '@/components/sidebar'
+import { ScrollArea } from '@radix-ui/react-scroll-area'
 
 import React from 'react'
 
@@ -12,10 +13,13 @@ const MainLayout = ({children}:{children: React.ReactNode}) => {
     <Sidebar/>
     {/* <Suspense fallback={<Loading/>}> */}
 
+      
     <div className='py-6 px-4 w-full'>
+
 
     {children}
     </div>
+      
     {/* </Suspense> */}
     </div>
   )

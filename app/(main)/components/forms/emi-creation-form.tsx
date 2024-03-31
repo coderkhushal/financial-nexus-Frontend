@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { date, z } from "zod"
-const SERVER = "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io/"
+const SERVER = "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -33,17 +33,19 @@ import {
 import { useDashboard } from "@/context/dashboard"
 
 const formSchema = z.object({
-    symbol: z.string().min(1, {
-        message: "symbol cannot be empyt",
-    }),
-    quantity: z.string(),
-    from_account_id: z.string(),
-    remarks: z.string(),
-    price: z.string(),
+    bank_name:z.string(), 
     name: z.string(),
+    to_account_id: z.string(),
+    monthly: z.string().min(1,{
+        message:"Monthly is required"
+    }),
+    total_time: z.string().min(1,{
+        message:"Total Time is required"
+    }),
+    remarks: z.string(),
     amount: z.string(),
 })
-const InvestmentCreationForm = () => {
+const EmiCreationForm = () => {
     const { auth } = userfirebase()
     const { bankdetails , refresh} = useDashboard()
     const [error, seterror] = useState<string | undefined>(undefined)
@@ -52,18 +54,17 @@ const InvestmentCreationForm = () => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            symbol: "",
-            quantity: "0",
-            from_account_id: "",
-            remarks: "",
-            name:"",
-            price:"",
-            amount: "",
+            bank_name:"",
+            name: "",
+            total_time: "0",
+
+            monthly: "0",
+            to_account_id: "",
         },
     })
 
     // 2. Define a submit handler.
-    async function banksubmit(values: z.infer<typeof formSchema>) {
+    async function emisubmit(values: z.infer<typeof formSchema>) {
         seterror("")
         setsuccess("")
         setPending(true)
@@ -71,14 +72,15 @@ const InvestmentCreationForm = () => {
         if (idtoken) {
             const data = {
                 "name":values.name,
-                "price":parseInt(values.price),
-                "symbol": values.symbol,
-                "quantity": parseInt(values.quantity),
-                "from_account_id": values.from_account_id,
+                "bank_name":values.bank_name,
+                "monthly":parseInt(values.monthly),
+                "total_time":parseInt(values.total_time),
+                "to_account_id":values.to_account_id,
                 "remarks": values.remarks,
                 "amount": parseInt(values.amount),
             }
-            let response = await axios.post(SERVER + "/data-add/add-stocks/", data, {
+            console.log(data)
+            let response = await axios.post(SERVER + "/data-add/add-emis/", data, {
                 headers:
                 {
                     "Authorization": "Bearer " + idtoken,
@@ -89,7 +91,7 @@ const InvestmentCreationForm = () => {
             if (response.status == 200) {
                 setsuccess("Added Successfully")
                 setPending(false)
-                refresh({variant:"BANK"})
+                refresh({variant:"EMI"})
             }
             else {
                 seterror("Internal Server Error")
@@ -104,13 +106,13 @@ const InvestmentCreationForm = () => {
 
 
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(banksubmit)} className="space-y-8">
+                <form onSubmit={form.handleSubmit(emisubmit)} className="space-y-8">
                     <FormField
                         control={form.control}
-                        name="symbol"
+                        name="name"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Symbol</FormLabel>
+                                <FormLabel>Name</FormLabel>
                                 <FormControl>
                                     <Input disabled={Pending} placeholder="Ram's Credit card" {...field} />
                                 </FormControl>
@@ -122,12 +124,12 @@ const InvestmentCreationForm = () => {
                     <FormField
 
                         control={form.control}
-                        name="quantity"
+                        name="bank_name"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Quantity</FormLabel>
+                                <FormLabel>Bank Name</FormLabel>
                                 <FormControl>
-                                    <Input disabled={Pending} type="number" placeholder="State bank Of India" {...field} />
+                                    <Input disabled={Pending}  placeholder="State bank Of India" {...field} />
                                 </FormControl>
 
                                 <FormMessage />
@@ -137,7 +139,7 @@ const InvestmentCreationForm = () => {
                     <FormField
 
                         control={form.control}
-                        name="from_account_id"
+                        name="to_account_id"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Account</FormLabel>
@@ -175,12 +177,26 @@ const InvestmentCreationForm = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="name"
+                        name="monthly"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Name</FormLabel>
+                                <FormLabel>Monthly</FormLabel>
                                 <FormControl>
-                                    <Input disabled={Pending} placeholder="card for business transactions" {...field} />
+                                    <Input disabled={Pending} type="number" placeholder="card for business transactions" {...field} />
+                                </FormControl>
+
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="total_time"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Total Time ( months)</FormLabel>
+                                <FormControl>
+                                    <Input disabled={Pending} type="number" placeholder="card for business transactions" {...field} />
                                 </FormControl>
 
                                 <FormMessage />
@@ -201,20 +217,7 @@ const InvestmentCreationForm = () => {
                             </FormItem>
                         )}
                     />
-                    <FormField
-                        control={form.control}
-                        name="price"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Price</FormLabel>
-                                <FormControl>
-                                    <Input type="number" disabled={Pending} placeholder="card for business transactions" {...field} />
-                                </FormControl>
-
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                    
                     <FormError message={error} />
                     <FormSuccess message={success} />
                     <Button type="submit">Submit</Button>
@@ -224,4 +227,4 @@ const InvestmentCreationForm = () => {
     )
 }
 
-export default InvestmentCreationForm
+export default EmiCreationForm
