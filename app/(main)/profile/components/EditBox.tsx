@@ -12,19 +12,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-function EditBox() {
+function EditBox({ endpoint, value }:{endpoint: any, value: any}) {
+  console.log(value);
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Badge variant="outline" className="cursor-pointer">
-          Edit
+          Sell
         </Badge>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit Purchases</DialogTitle>
           <DialogDescription>
-            Make changes to your Purchases here. Click save when you &apos re done.
+            Make changes to your Purchases here. Click save when you &apos re
+            done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

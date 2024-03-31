@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -12,52 +12,74 @@ import {
 import Personal from "@/app/(main)/profile/components/Personal";
 import TableContainer from "@/app/(main)/profile/components/TableContainer";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
+import { userfirebase } from "@/context/firebase";
+import { getHeaders } from "@/helpers/getHeaders";
+import { fetchdata } from "./Fetch/apis";
+import EmiLoanTable from "./components/EmiLoanTable";
+import AssetFdTable from "./components/AssetFdTable";
+const SERVER =
+  "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io/";
 
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+const Page = () => {
+  const { auth } = userfirebase();
+  const [Banks, setBanks] = useState(null);
+  const [Cards, setCards] = useState(null);
+  const [Emis, setEmis] = useState(null);
+  const [Loans, setLoans] = useState(null);
+  const [Fds, setFds] = useState(null);
+  const [Assets, setAssets] = useState(null);
 
-const page = () => {
+  const fetchall = async () => {
+    if (auth.currentUser) {
+      const dataBanks = await fetchdata("/data-get/get-banks/");
+      setBanks(dataBanks);
+      const dataCards = await fetchdata("/data-get/get-cards/");
+      setCards(dataCards);
+      const dataEmis = await fetchdata("/data-get/get-emis/");
+      setEmis(dataEmis);
+      const dataLoans = await fetchdata("/data-get/get-loans/");
+      setLoans(dataLoans);
+      const dataFds = await fetchdata("/data-get/get-fds/");
+      setFds(dataFds);
+      const dataAssets = await fetchdata("/data-get/get-assets/");
+      setAssets(dataAssets);
+    }
+  };
+
+  useEffect(() => {
+    if (auth.currentUser) {
+      fetchall();
+    }
+  }, [auth.currentUser]);
+
   return (
-    <div className="mt-14 ">
+    <div className="">
       <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
         <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
           <Card>
             <CardHeader>
               <CardTitle>Purchases/Investments</CardTitle>
-              <TableContainer />
+              <AssetFdTable data={{ Assets, Fds }} />
             </CardHeader>
           </Card>
 
           <Card>
             <CardHeader>
               <CardTitle>Loans/EMI</CardTitle>
-              <TableContainer />
+              <EmiLoanTable data={{ Emis, Loans }} />
             </CardHeader>
           </Card>
 
           <Card>
             <CardHeader>
               <CardTitle>Card/Bank</CardTitle>
-              <TableContainer />
+              <TableContainer data={{ Cards, Banks }} />
             </CardHeader>
           </Card>
         </div>
-        <Personal />
       </div>
     </div>
   );
 };
 
-export default page;
+export default Page;
