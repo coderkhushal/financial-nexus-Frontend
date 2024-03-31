@@ -42,15 +42,15 @@ const DashBoardPage = () => {
 
                 <BankCreationModal>
 
-                    <CreationCard heading='Add Bank/Card' details='you have currently 3 bank accounts'  />
+                    <CreationCard heading='Add Bank/Card' details={`you have  ${bankdetails? bankdetails.length : 0} bank accounts and ${carddetails? carddetails.length : 0} cards`}  />
                 </BankCreationModal>
                 <PurchaseStocksModal>
 
-                    <CreationCard heading='Add Investment/Purchases' details='you have currently 3 bank accounts' />
+                    <CreationCard heading='Add Investment/Purchases' details={`you have currently ${purchasedetails ? purchasedetails.length : 0 } purchases and ${investmentdetails ? investmentdetails.length : 0 } stocks`} />
                 </PurchaseStocksModal>
                 <LoanEmiCreationModal>
 
-                <CreationCard heading='Add Loan/Emi' details='you have currently 3 bank accounts' />
+                <CreationCard heading='Add Loan/Emi' details={`you have currently ${loandetails ? loandetails.length : 0 } loans and ${emidetails ? emidetails.length : 0 } emi`} />
                 </LoanEmiCreationModal>
             </div>
 
