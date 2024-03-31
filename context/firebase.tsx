@@ -12,6 +12,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   Auth,
+  onAuthStateChanged,
 } from "firebase/auth";
 
 import { useRouter } from "next/navigation";
@@ -59,14 +60,17 @@ export const siginincontext = createContext<AuthContextType>({
 
 export const Signinprovider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-
+  
   const [User, setUser] = useState<UserCredential | null>(null);
   useEffect(() => {
-    const u = localStorage.getItem("user");
-    if (u) {
-      setUser(JSON.parse(u));
-    }
-  }, []);
+    const unsubscribe= onAuthStateChanged(auth, (user)=>{
+      if(!user){
+        setUser(null)
+        router.push("/auth/login")
+      }
+      return ()=> unsubscribe()
+    })
+  }, [router]);
   //login with email and password
   const signinwithemailandpassword = (email: string, password: string) =>
     signInWithEmailAndPassword(auth, email, password).then(

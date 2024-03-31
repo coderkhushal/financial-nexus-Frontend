@@ -18,13 +18,7 @@ import DashBoardState, { useDashboard } from '@/context/dashboard'
 import LoanEmiCreationModal from '../components/creationmodals/loan-emi-creation-modal'
 type fetchdetailstype = { url: string, variant: "BANK" | "LOAN" | "CARD" | "EMI" | "PURCHASE" | "INVESTMENT" }
 const DashBoardPage = () => {
-    const { auth } = userfirebase()
-    const router = useRouter()
-    useEffect(() => {
-        if (!auth.currentUser) {
-            router.push("/auth/login")
-        }
-    }, [router, auth])
+    const {auth} = userfirebase()
     const {bankdetails, carddetails, loandetails, emidetails, purchasedetails , investmentdetails, fetchdetails} = useDashboard()
     useEffect(()=>{
         fetchdetails({ url: "get-banks", variant: "BANK" }),
@@ -34,7 +28,7 @@ const DashBoardPage = () => {
         fetchdetails({ url: "get-stocks", variant: "INVESTMENT" })
         fetchdetails({ url: "get-assets", variant: "PURCHASE" })
     }, [auth.currentUser])
-    console.log(bankdetails)
+
     return (
 
         <div className='w-full gap-10 h-full flex flex-col'>
