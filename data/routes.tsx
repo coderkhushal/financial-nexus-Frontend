@@ -1,12 +1,12 @@
 export const routes= [
     {
-        route:"dashboard",
+        route:"/dashboard",
         name:"Home",
 
     },
 
     {
-        route:"profile",
+        route:"/profile",
         name:"Profile ",
     }
 ,

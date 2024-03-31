@@ -9,11 +9,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import Personal from "@/app/(main)/profile/components/Personal";
 import TableContainer from "@/app/(main)/profile/components/TableContainer";
 
 import { userfirebase } from "@/context/firebase";
-import { getHeaders } from "@/helpers/getHeaders";
 import { fetchdata } from "./Fetch/apis";
 import EmiLoanTable from "./components/EmiLoanTable";
 import AssetFdTable from "./components/AssetFdTable";
