@@ -19,7 +19,10 @@ export const register= async (usercred: UserCredential | void, name?: string )=>
 
         const resp = await fetch(`${SERVER}/user/create-user`, {
             method: "POST",
-            headers: getHeaders(firebase_user_id), 
+            headers: {
+                "Authorization": "Bearer " + firebase_user_id,
+                'Content-Type': 'application/json'
+            }, 
             body: JSON.stringify({name, email, firebase_user_id})
         })
         if(resp.status !== 200){
