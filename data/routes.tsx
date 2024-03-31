@@ -10,8 +10,5 @@ export const routes= [
         name:"Profile ",
     }
 ,
-    {
-        route:"/transactions",
-        name:"Transactions",
-    },
+
 ]
