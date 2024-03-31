@@ -48,14 +48,13 @@ const router= useRouter()
     }
   };
 
+
   useEffect(() => {
-    if (auth.currentUser) {
-      fetchall();
+    
+    if(auth.currentUser?.getIdToken()){
+      fetchall()
     }
-    else{
-      router.push("/auth/login")
-    }
-  }, [auth.currentUser, router]);
+}, [router, auth])
 
   return (
     <div className="">
