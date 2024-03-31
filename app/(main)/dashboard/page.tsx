@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-const SERVER= "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io/"
+const SERVER = "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io/"
 import CreationCard from '../components/creationcard'
 import Detailscard from '../components/Detailscard'
 import BanksDetailsComponent from '../components/details-components/bankCard/bank-details-component'
@@ -14,79 +14,44 @@ import PurchaseStocksModal from '../components/creationmodals/purchases-stocks-m
 
 import { userfirebase } from '@/context/firebase'
 import { useRouter } from 'next/navigation'
-type fetchdetailstype= {url: string, variant: "BANK"| "LOAN" | "CARD" | "EMI" | "PURCHASE" | "INVESTMENT"}
+import DashBoardState, { useDashboard } from '@/context/dashboard'
+import LoanEmiCreationModal from '../components/creationmodals/loan-emi-creation-modal'
+type fetchdetailstype = { url: string, variant: "BANK" | "LOAN" | "CARD" | "EMI" | "PURCHASE" | "INVESTMENT" }
 const DashBoardPage = () => {
-    const {auth} = userfirebase()
+    const { auth } = userfirebase()
     const router = useRouter()
-    if(!auth.currentUser){
-        router.push("/auth/login")
-    
-    }
-    const [bankdetails, setbankdetails] = useState([])
-    const [carddetails, setcarddetails] = useState([])
-    const [loandetails, setloandetails] = useState([])
-    const [emidetails, setemidetails] = useState([])
-    const [purchasedetails, setpurchasedetails] = useState([])
-    const [investmentdetails, setinvestmentdetails] = useState([])
-    
-    const fetchdetails=async({url, variant}: fetchdetailstype )=>{
-        const idtoken = await auth.currentUser?.getIdToken()
-        const res=await fetch(`${SERVER}/data-get/${url}/`, {
-            headers:                {
-                "Authorization": "Bearer " + idtoken,
-                'Content-Type': 'application/json'
-            },
-
-        })
-        const data=await res.json()
-        console.log(data)
-        switch (variant){
-            case "BANK":
-                setbankdetails(data)
-                break;
-            case "LOAN":
-                setloandetails(data)
-                break;
-            case "CARD":
-                setcarddetails(data)
-                break;
-            case "PURCHASE":
-                setpurchasedetails(data)
-                break;
-            case "INVESTMENT":
-                setinvestmentdetails(data)
-                break;
-            case "EMI":
-                setemidetails(data)
-                break;
+    useEffect(() => {
+        if (!auth.currentUser) {
+            router.push("/auth/login")
         }
-        
-        
-
-    }
-
-
+    }, [router, auth])
+    const {bankdetails, carddetails, loandetails, emidetails, purchasedetails , investmentdetails, fetchdetails} = useDashboard()
     useEffect(()=>{
-        fetchdetails({url:"get-banks", variant:"BANK"});
-        fetchdetails({url:"get-cards", variant:"CARD"});
-        fetchdetails({url:"get-loans", variant:"LOAN"});
-        fetchdetails({url:"get-emis", variant:"EMI"});
-        fetchdetails({url:"get-stocks", variant:"INVESTMENT"});
-        
+        fetchdetails({ url: "get-banks", variant: "BANK" }),
+        fetchdetails({ url: "get-cards", variant: "CARD" }),
+        fetchdetails({ url: "get-loans", variant: "LOAN" }),
+        fetchdetails({ url: "get-emis", variant: "EMI" }),
+        fetchdetails({ url: "get-stocks", variant: "INVESTMENT" })
+        fetchdetails({ url: "get-assets", variant: "PURCHASE" })
     }, [auth.currentUser])
+    console.log(bankdetails)
     return (
+
         <div className='w-full gap-10 h-full flex flex-col'>
             <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 w-full'>
 
                 <BankCreationModal>
 
-                    <CreationCard heading='Add Bank/Card' details='you have currently 3 bank accounts' />
+                    <CreationCard heading='Add Bank/Card' details='you have currently 3 bank accounts'  />
                 </BankCreationModal>
                 <PurchaseStocksModal>
 
-                <CreationCard heading='Add Investment/Purchases' details='you have currently 3 bank accounts' />
+                    <CreationCard heading='Add Investment/Purchases' details='you have currently 3 bank accounts' />
                 </PurchaseStocksModal>
+                <LoanEmiCreationModal>
+
                 <CreationCard heading='Add Loan/Emi' details='you have currently 3 bank accounts' />
+                </LoanEmiCreationModal>
             </div>
 
             <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 w-full'>
@@ -94,20 +59,22 @@ const DashBoardPage = () => {
                     <BanksDetailsComponent heading='Bank Details' bankdetailsarr={bankdetails} />
                     <CardDetailsComponent heading='Card Details' carddetailsarr={carddetails} />
                 </Detailscard>
-                <Detailscard heading="Loan/Emi Details">
-                    <LoanDetailsComponent heading='Loans' loandetailsarr={loandetails} />
-                    <LoanDetailsComponent heading='Emi' loandetailsarr={emidetails} />
-                </Detailscard>
+
                 <Detailscard heading="Purchases/Investments">
 
                     <PurchaseDetailsComponent heading='Purchases' purchasedetailsarr={purchasedetails} />
                     <InvestmentDetailsComponent heading='Investments' investmentdetailsarr={investmentdetails} />
+                </Detailscard>
+                <Detailscard heading="Loan/Emi Details">
+                    <LoanDetailsComponent heading='Loans' loandetailsarr={loandetails} />
+                    <LoanDetailsComponent heading='Emi' loandetailsarr={emidetails} />
                 </Detailscard>
 
             </div>
 
 
         </div>
+  
     )
 }
 

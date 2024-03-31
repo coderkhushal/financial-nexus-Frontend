@@ -4,7 +4,7 @@ import { Investment} from '@/app/types/purchase-investment'
 import React from 'react'
 interface PurchaseDetailsComponentProps {
   heading: string
-  investmentdetailsarr?: Investment[]
+  investmentdetailsarr: Investment[] | null
 }
 const InvestmentDetailsComponent= ({ heading, investmentdetailsarr }: PurchaseDetailsComponentProps) => {
   return (
@@ -19,17 +19,12 @@ const InvestmentDetailsComponent= ({ heading, investmentdetailsarr }: PurchaseDe
             <span className={`flex h-2 w-2 translate-y-1 rounded-full bg-sky-500 `} />
             <div className="space-y-1">
               <p className="text-sm font-medium leading-none">
-                {investment.name}
+                {investment.symbol}
               </p>
               <p className="text-sm text-muted-foreground">
-                Quantity : {investment.quantity}
+                Quantity : {investment.quantity_left}
               </p>
-              <p className="text-sm text-muted-foreground">
-                 Stock Price: {investment.stockprice}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                total price : {investment.quantity * investment.stockprice}
-              </p>
+
             </div>
           </div>
         ))  :

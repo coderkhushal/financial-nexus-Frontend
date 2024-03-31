@@ -2,7 +2,7 @@ import { CardDetails } from '@/app/types/bankcard'
 import React from 'react'
 interface BankCardDetailsProps {
   heading: string
-  carddetailsarr?: CardDetails[]
+  carddetailsarr: CardDetails[] | null
 }
 const CardDetailsComponent = ({ heading, carddetailsarr }: BankCardDetailsProps) => {
   return (
@@ -14,15 +14,18 @@ const CardDetailsComponent = ({ heading, carddetailsarr }: BankCardDetailsProps)
             key={index}
             className="relative grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0"
           >
-            <span className={`flex h-2 w-2 translate-y-1 rounded-full bg-${card.disable ? "red" : "sky"}-500 `} />
+            <span className={`flex h-2 w-2 translate-y-1 rounded-full bg-${card.disabled ? "red" : "sky"}-500 `} />
             <div className="space-y-1">
               <p className="text-sm font-medium leading-none">
-                {card.bankname}
+                {card.name}
               </p>
               <p className="text-sm text-muted-foreground">
-                LIMIT: {card.limit}
+                Card Name: {card.card_name}
               </p>
-              <div className='text-sm text-muted-foreground' >valid till: {card.validity}</div>
+              <p className="text-sm text-muted-foreground">
+                LIMIT: {card.card_limit}
+              </p>
+              {/* <div className='text-sm text-muted-foreground' >valid till: {card.validity}</div> */}
             </div>
           </div>
         )) :

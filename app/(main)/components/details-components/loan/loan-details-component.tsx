@@ -3,7 +3,7 @@ import { Loan } from '@/app/types/loan'
 import React from 'react'
 interface BankCardDetailsProps {
   heading: string
-  loandetailsarr?: Loan[]
+  loandetailsarr: Loan[] | null
 }
 const LoanDetailsComponent = ({ heading, loandetailsarr }: BankCardDetailsProps) => {
   return (
@@ -15,17 +15,15 @@ const LoanDetailsComponent = ({ heading, loandetailsarr }: BankCardDetailsProps)
             key={index}
             className=" grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0"
           >
-            <span className={`flex h-2 w-2 translate-y-1 rounded-full bg-sky-500 `} />
+            <span className={`flex h-2 w-2 translate-y-1 rounded-full bg-${loan.paid!=0?"red":"sky"}-500 `} />
             <div className="space-y-1">
               <p className="text-sm font-medium leading-none">
-                {loan.amount}
+                {loan.bank_name}
               </p>
-              <p className="text-sm text-muted-foreground">
+              {heading=="Emi" && <p className="text-sm text-muted-foreground">
                 Monthly: {loan.monthly}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Interest : {loan.interest}%
-              </p>
+              </p>}
+              
             </div>
           </div>
         ))  :
