@@ -61,7 +61,6 @@ export const Signinprovider = ({ children }: { children: React.ReactNode }) => {
     const u = localStorage.getItem("user");
     if (u) {
       setUser(JSON.parse(u));
-      router.push("/dashboard");
     }
   }, []);
   //login with email and password
@@ -106,6 +105,7 @@ export const Signinprovider = ({ children }: { children: React.ReactNode }) => {
         signinwithemailandpassword,
         signinwithgoogle,
         signupwithemailandpassword,
+        setUser,
         User,
       }}
     >

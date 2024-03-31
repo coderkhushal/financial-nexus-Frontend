@@ -28,6 +28,7 @@ const Personal = () => {
           { method: "GET", headers: getHeaders(firebase_user_id) }
         );
         const data = await res.json();
+        setDetail(data);
 
         console.log(data);
       }
@@ -55,7 +56,7 @@ const Personal = () => {
             id="name"
             type="text"
             className="w-full outline-none focus:outline-none shadow-none"
-            defaultValue="Navtesh"
+            defaultValue={detail.name}
             readOnly
           />
         </div>
@@ -65,7 +66,7 @@ const Personal = () => {
             id="name"
             type="text"
             className="w-full"
-            defaultValue="navtesh@gmail.com"
+            defaultValue={detail.email}
             readOnly
           />
         </div>
