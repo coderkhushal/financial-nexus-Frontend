@@ -16,11 +16,11 @@ const Social =({variant}:{variant: "LOGIN" | "SIGNUP"}) => {
         if(variant=="SIGNUP"){
             register(user).then(()=>{
 
-              router.push("/dashboard")
+              router.push("/main/dashboard")
             })
         }
         else{
-          router.push("/dashboard")
+          router.push("/main/dashboard")
         }
       }
       

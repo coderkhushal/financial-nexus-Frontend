@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import TableContainer from "@/app/(main)/profile/components/TableContainer";
+import TableContainer from "@/app/main/profile/components/TableContainer";
 
 import { userfirebase } from "@/context/firebase";
 import { fetchdata } from "./Fetch/apis";

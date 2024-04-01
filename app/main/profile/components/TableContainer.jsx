@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import DialogBox from "@/app/(main)/profile/components/DialogBox";
+import DialogBox from "@/app/main/profile/components/DialogBox";
 import EditBox from "./EditBox";
 
 const TableContainer = ({ data }) => {

@@ -43,6 +43,7 @@ const LoginPage = () => {
         setsuccess("")
         seterror("")
         setPending(true)
+        
         try{
 
             let usercred = await signinwithemailandpassword(values.email, values.password)
@@ -50,7 +51,8 @@ const LoginPage = () => {
             if(usercred?.user){
                 setsuccess("Login Successful")
                 localStorage.setItem("User", JSON.stringify(usercred.user))
-                router.push("/dashboard")
+                
+                router.push("/main/dashboard")
             }
             else{
                 seterror("Invalid Credentials")

@@ -50,7 +50,7 @@ const RegisterPage = () => {
             register(usercred,values.username)
             .then((data)=>{
                 if(data.success){
-                    router.push("/dashboard")
+                    router.push("/main/dashboard")
                 }
                 setsuccess(data.success)
                 seterror(data.error)
