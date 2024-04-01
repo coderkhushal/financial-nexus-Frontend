@@ -11,16 +11,19 @@ import {
 import { Badge } from "@/components/ui/badge";
 import DialogBox from "@/app/main/profile/components/DialogBox";
 import EditBox from "./EditBox";
-interface emiloantabledata{
+interface emiloantabledata {
   Assets: any;
-  Fds: any
+  Fds: any;
+  Banks: any;
 }
-const EmiLoanTable = ( {data} : {data:emiloantabledata}) => {
+const EmiLoanTable = ({ data }: { data: emiloantabledata }) => {
   const Assets = data?.Assets;
   const Fds = data?.Fds;
+  const Banks = data?.Banks;
 
   console.log(Assets);
   console.log(Fds);
+  console.log(Banks);
   return (
     <Table>
       <TableCaption>A list of your recent Assets.</TableCaption>
@@ -43,8 +46,9 @@ const EmiLoanTable = ( {data} : {data:emiloantabledata}) => {
                   <TableCell>{Asset.sell_price}</TableCell>
                   <TableCell className="text-right">
                     <EditBox
-                      endpoint={`/data-edit/${Asset.id}/sell-asset/`}
-                      value={{ Asset }}
+                      endpoint={`data-edit/${Asset.id}/sell-asset/`}
+                      asset={{ Asset }}
+                      Banks={{ Banks }}
                     />
                   </TableCell>
                 </TableRow>
@@ -59,7 +63,7 @@ const EmiLoanTable = ( {data} : {data:emiloantabledata}) => {
           </TableRow>
         )}
         {Fds ? (
-          Fds.map((Fd :any) => {
+          Fds.map((Fd: any) => {
             return (
               <>
                 <TableRow>
@@ -68,8 +72,9 @@ const EmiLoanTable = ( {data} : {data:emiloantabledata}) => {
                   <TableCell>{Fd.sell_amount}</TableCell>
                   <TableCell className="text-right">
                     <EditBox
-                      endpoint={`/data-edit/${Fd.id}/sell-fd/`}
-                      value={{ Fd }}
+                      endpoint={`data-edit/${Fd.id}/sell-fd/`}
+                      fd={{ Fd }}
+                      Banks={{ Banks }}
                     />
                   </TableCell>
                 </TableRow>

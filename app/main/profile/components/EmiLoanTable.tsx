@@ -11,13 +11,16 @@ import {
 import { Badge } from "@/components/ui/badge";
 import DialogBox from "@/app/main/profile/components/DialogBox";
 import EditBox from "./EditBox";
-interface emidata{
+interface emidata {
   Emis: any;
   Loans: any;
+  Banks: any;
 }
-const EmiLoanTable = ({ data } :{data: emidata} ) => {
+const EmiLoanTable = ({ data }: { data: emidata }) => {
   const Emis = data?.Emis;
   const Loans = data?.Loans;
+  const Banks = data?.Banks;
+  console.log(Emis, Loans);
 
   return (
     <Table>
@@ -26,23 +29,25 @@ const EmiLoanTable = ({ data } :{data: emidata} ) => {
         <TableRow>
           <TableHead className="w-[100px]">Bank</TableHead>
           <TableHead>Commodity</TableHead>
-          <TableHead className="">Status</TableHead>
+          <TableHead className="">Total/Pending Amount</TableHead>
           <TableHead className="text-center">-</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {Emis ? (
-          Emis.map((Emi : any) => {
+          Emis.map((Emi: any) => {
             return (
               <>
                 <TableRow>
                   <TableCell className="font-medium">{Emi.bank_name}</TableCell>
                   <TableCell>{Emi.name}</TableCell>
-                  <TableCell>
-                    {Emi.disabled ? <p>Disabled</p> : <p>Active</p>}
-                  </TableCell>
+                  <TableCell>{Emi.pending}</TableCell>
                   <TableCell className="text-right">
-                    <DialogBox endpoint={`/data-edit/${Emi.id}/close-emi/`} />
+                    <EditBox
+                      endpoint={`data-edit/${Emi.id}/pay-emi/`}
+                      Banks={{ Banks }}
+                      Emi={{ Emi }}
+                    />
                   </TableCell>
                 </TableRow>
               </>
@@ -64,11 +69,13 @@ const EmiLoanTable = ({ data } :{data: emidata} ) => {
                     {Loan.bank_name}
                   </TableCell>
                   <TableCell>{Loan.name}</TableCell>
-                  <TableCell>
-                    {Loan.disabled ? <p>Disabled</p> : <p>Active</p>}
-                  </TableCell>
+                  <TableCell>{Loan.total_amount}</TableCell>
                   <TableCell className="text-right">
-                    <DialogBox endpoint={`/data-edit/${Loan.id}/close-loan/`} />
+                    <EditBox
+                      endpoint={`data-edit/${Loan.id}/pay-loan/`}
+                      Banks={{ Banks }}
+                      Loan={{ Loan }}
+                    />
                   </TableCell>
                 </TableRow>
               </>

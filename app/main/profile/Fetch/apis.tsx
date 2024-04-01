@@ -25,3 +25,15 @@ export const deleteData = async (endpoint: string) => {
   console.log(data);
   return data;
 };
+
+export const sellassetfd = async (endpoint: string) => {
+  const { auth } = userfirebase();
+  const res = await fetch(`${SERVER}${endpoint}`, {
+    method: "POST",
+    headers: await getHeaders(),
+  });
+  const data = await res.json();
+
+  console.log(data);
+  return data;
+};

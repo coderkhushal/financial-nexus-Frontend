@@ -27,9 +27,8 @@ const Page = () => {
   const [Loans, setLoans] = useState(null);
   const [Fds, setFds] = useState(null);
   const [Assets, setAssets] = useState(null);
-const router= useRouter()
+  const router = useRouter();
   const fetchall = async () => {
-    
     if (auth.currentUser) {
       const dataBanks = await fetchdata("/data-get/get-banks/");
       setBanks(dataBanks);
@@ -46,29 +45,27 @@ const router= useRouter()
     }
   };
 
-
   useEffect(() => {
-    
-    if(auth.currentUser?.getIdToken()){
-      fetchall()
+    if (auth.currentUser?.getIdToken()) {
+      fetchall();
     }
-}, [router, auth])
+  }, [router, auth]);
 
   return (
     <div className="">
-      <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
-        <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
+      <div className="grid gap-4  lg:gap-8">
+        <div className="grid auto-rows-max items-start gap-4  lg:gap-8">
           <Card>
             <CardHeader>
-              <CardTitle>Purchases/Investments</CardTitle>
-              <AssetFdTable data={{ Assets, Fds }} />
+              <CardTitle>Assets/Fds</CardTitle>
+              <AssetFdTable data={{ Assets, Fds, Banks }} />
             </CardHeader>
           </Card>
 
           <Card>
             <CardHeader>
               <CardTitle>Loans/EMI</CardTitle>
-              <EmiLoanTable data={{ Emis, Loans }} />
+              <EmiLoanTable data={{ Emis, Loans, Banks }} />
             </CardHeader>
           </Card>
 

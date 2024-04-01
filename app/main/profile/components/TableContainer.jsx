@@ -38,7 +38,8 @@ const TableContainer = ({ data }) => {
         <TableRow>
           <TableHead className="w-[100px]"> Name</TableHead>
           <TableHead>Balance</TableHead>
-          <TableHead className="text-right">Status</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead className="text-center">-</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
