@@ -1,4 +1,5 @@
 "use client"
+import ChatWidget from '@/components/chatwidget'
 import Sidebar from '@/components/sidebar'
 import { ScrollArea } from '@radix-ui/react-scroll-area'
 
@@ -12,7 +13,7 @@ const MainLayout = ({children}:{children: React.ReactNode}) => {
     <div className='w-full h-full flex '>
     <Sidebar/>
     {/* <Suspense fallback={<Loading/>}> */}
-
+    <ChatWidget/>
       
     <div className='py-6 px-4 w-full h-full overflow-y-scroll'>
 
