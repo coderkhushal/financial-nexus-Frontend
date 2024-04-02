@@ -28,7 +28,7 @@ const Sidebar = () => {
                 </Link>
                 <div className="my-2 bg-gray-600 h-[1px]"></div>
             </div>
-            {routes.map((route, index) => (
+            { routes.map((route, index) => (
                 <Link href={route.route} key={index} className='w-full' >
                     <Button className='w-full p-0 my-2' >
 

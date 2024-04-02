@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 };
 import { ToastContainer } from 'react-toastify';
 import DashBoardState from "@/context/dashboard";
+import ChatWidget from "@/components/chatwidget";
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -25,6 +26,7 @@ export default function RootLayout({
           <DashBoardState>
 
         <ToastContainer/>
+
           {children}
           </DashBoardState>
         </Signinprovider>

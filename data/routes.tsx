@@ -13,6 +13,5 @@ export const routes= [
         route:"/main/transactions", 
         name: "Transactions"
     }
-,
 
 ]
