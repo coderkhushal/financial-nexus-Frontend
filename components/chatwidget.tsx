@@ -117,11 +117,11 @@ const ChatWidget = () => {
                     <div id="chatbox" className="p-4 h-80 overflow-y-auto">
                         {prevchats && prevchats.map((chat, index) => (
                             chat.message_by === "user" ?
-                            <div className="mb-2 text-right">
+                            <div className="mb-2 text-right" key={index}>
                                 <p className="bg-gray-900 text-white rounded-lg py-2 px-4 inline-block">{chat.message}</p>
                             </div>
                             :
-                            <div className="mb-2">
+                            <div className="mb-2" key={index}>
                                 <p className="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 inline-block">{chat.message}</p>
                             </div>
 
@@ -130,11 +130,11 @@ const ChatWidget = () => {
                         {!prevchats && <div>Loading</div>}
                         {chats.length > 0 && chats.map((chat, index) => (
                             chat.message_by === "user" ?
-                                <div className="mb-2 text-right">
+                                <div key={index} className="mb-2 text-right">
                                     <p className="bg-gray-900 text-white rounded-lg py-2 px-4 inline-block">{chat.message}</p>
                                 </div>
                                 :
-                                <div className="mb-2">
+                                <div key={index} className="mb-2">
                                     <p className="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 inline-block">{chat.message}</p>
                                 </div>
 
