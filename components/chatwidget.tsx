@@ -83,6 +83,10 @@ const ChatWidget = () => {
                 
                 setchats(value=>[...value, { message: response.data[1].message, message_by:"ai" }])
             }
+            else{
+                setchats(value=>[...value, { message: "I am Sorry. There's some error on the server.", message_by:"ai" }])
+                
+            }
         }
         else {
             setchats([...chats, { message: "some error occured", message_by: "ai" }])
