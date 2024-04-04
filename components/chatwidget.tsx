@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button } from './ui/button'
 import axios from 'axios'
 import { userfirebase } from '@/context/firebase'
@@ -34,6 +34,11 @@ const ChatWidget = () => {
     const [chats, setchats] = useState<chattype[]>([{ message: "Welcome to Financial Nexus", message_by:"ai" }])
     const { auth } = userfirebase()
     const [show, setshow] = useState(false)
+    const divRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      divRef.current?.scrollIntoView({ behavior: 'smooth' });
+    });
     const pathname = usePathname()
     const [prevchats, setprevchats] = useState<chattype[] | null>(null)
     const toggle = () => {
@@ -114,7 +119,7 @@ const ChatWidget = () => {
                     </div>
 
                     {/* previos chats  */}
-                    <div id="chatbox" className="p-4 h-80 overflow-y-auto">
+                    <div id="chatbox" className="p-4 h-80 overflow-y-auto" ref={divRef}>
                         {prevchats && prevchats.map((chat, index) => (
                             chat.message_by === "user" ?
                             <div className="mb-2 text-right" key={index}>
@@ -155,7 +160,7 @@ const ChatWidget = () => {
                                     <FormItem>
 
                                         <FormControl>
-                                            <Input className='w-[17rem]' placeholder="shadcn" {...field} />
+                                            <Input className='w-[17rem]' placeholder="type your message" {...field} />
                                         </FormControl>
 
                                         <FormMessage />
