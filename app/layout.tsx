@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 import { ToastContainer } from 'react-toastify';
 import DashBoardState from "@/context/dashboard";
 import ChatWidget from "@/components/chatwidget";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+
         <Signinprovider>
           <DashBoardState>
 
@@ -30,6 +32,7 @@ export default function RootLayout({
           {children}
           </DashBoardState>
         </Signinprovider>
+
       </body>
     </html>
   );

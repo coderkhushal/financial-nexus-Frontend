@@ -13,7 +13,7 @@ const Sidebar = () => {
     const { handlesignout } = userfirebase()
     return (
         <div
-            className="sidebar h-full p-2 w-[300px] relative  text-center bg-gray-900"
+            className="sidebar h-full p-2 w-full relative  text-center bg-gray-900"
         >
             <div className="text-gray-100 text-xl ">
                 <Link href="/">
@@ -30,14 +30,14 @@ const Sidebar = () => {
             </div>
             { routes.map((route, index) => (
                 <Link href={route.route} key={index} className='w-full' >
-                    <Button className='w-full p-0 my-2' >
+                    <Button className='w-full space-x-0 p-0 my-2' >
 
 
                         <div
-                            className={`p-2.5 mt-3 flex w-full items-center rounded-md px-4 duration-300 cursor-pointer ${pathname == route.route && "bg-gray-600"}  hover:bg-blue-600 text-white`}
+                            className={`p-2.5 mt-3 flex w-full  rounded-md  duration-300 cursor-pointer ${pathname == route.route && "bg-gray-600"} justify-start hover:bg-blue-600 text-white`}
                             >
-                            <i className="bi bi-house-door-fill"></i>
-                            <span className="text-[15px] ml-4 w-full text-gray-200 font-bold">{route.name}</span>
+                            <route.icon/>
+                            <span className="text-[15px]  w-full text-gray-200 font-bold">{route.name}</span>
                         </div>
                     
                             </Button>

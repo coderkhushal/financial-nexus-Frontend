@@ -6,7 +6,7 @@ import { userfirebase } from "./firebase";
 import { BankDetails, CardDetails } from "@/app/types/bankcard";
 import { Loan } from "@/app/types/loan";
 import { Investment, Purchase } from "@/app/types/purchase-investment";
-const SERVER = "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io/"
+const SERVER = "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io"
 type fetchdetailstype = { url: string, variant: "BANK" | "LOAN" | "CARD" | "EMI" | "PURCHASE" | "INVESTMENT" }
 
 interface dashboardcontexttype{
