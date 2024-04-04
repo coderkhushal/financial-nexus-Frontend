@@ -111,7 +111,7 @@ const ChatWidget = () => {
     <div
       className={`${
         pathname == "/main/chat" && "hidden"
-      } h-full flex items-end py-2`}
+      } h-full  flex items-end py-2`}
     >
       <Button
         onClick={toggle}
@@ -123,9 +123,9 @@ const ChatWidget = () => {
       </Button>
       <div
         id="chat-container"
-        className={`fixed ${!show && "hidden"} aitom-5 z-40 right-4 w-96`}
+        className={`fixed ${!show && "hidden"} aitom-5 z-40 lg:right-4 md:right-4 right-0 lgw-96 md:w-96 w-80`}
       >
-        <div className="bg-white shadow-md pb-2 rounded-lg max-w-lg w-full">
+        <div className="bg-white shadow-md pb-2 rounded-lg  w-full ">
           <div className=" border-b p-4 bg-gray-900 text-white rounded-t-lg flex justify-between items-center">
             <h1>FinBot</h1>
             <button
@@ -190,7 +190,7 @@ const ChatWidget = () => {
                 
 
                     <Form {...form} >
-                        <form onSubmit={form.handleSubmit(onSubmit)} className=" justify-evenly flex">
+                        <form onSubmit={form.handleSubmit(onSubmit)} className=" justify-evenly px-2s flex">
                             <FormField
 
                                 control={form.control}
@@ -199,7 +199,7 @@ const ChatWidget = () => {
                                     <FormItem>
 
                                         <FormControl>
-                                            <Input className='w-[17rem]' placeholder="shadcn" {...field} />
+                                            <Input className='w-[12rem]' placeholder="shadcn" {...field} />
                                         </FormControl>
 
                     <FormMessage />
