@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import axios from "axios";
@@ -18,6 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import MarkdownRenderer from "./markdownrender";
 const SERVER =
   "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io";
 interface chattype {
@@ -166,7 +167,8 @@ const ChatWidget = () => {
                 ) : (
                   <div className="mb-2" key={index}>
                     <p className="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 inline-block">
-                      {chat.message}
+                      
+                    <MarkdownRenderer content={chat.message} />
                     </p>
                   </div>
                 )
@@ -181,11 +183,12 @@ const ChatWidget = () => {
                     </p>
                   </div>
                 ) : (
-                  <div key={index} className="mb-2">
-                    <p className="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 inline-block">
-                      {chat.message}
-                    </p>
-                  </div>
+                  <div className="mb-2" key={index}>
+                  <p className="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 inline-block">
+                    
+                  <MarkdownRenderer content={chat.message} />
+                  </p>
+                </div>
                 )
               )}
           </div>
