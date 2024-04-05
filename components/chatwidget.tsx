@@ -32,19 +32,20 @@ const formSchema = z.object({
   }),
 });
 const ChatWidget = () => {
-    const [chats, setchats] = useState<chattype[]>([{ message: "Welcome to Financial Nexus", message_by:"ai" }])
-    const { auth } = userfirebase()
-    const [show, setshow] = useState(false)
-    const pathname = usePathname()
-    const [prevchats, setprevchats] = useState<chattype[] | null>(null)
-    const toggle = () => {
-        setshow(value => (!value))
-    }
-    const fetchprevchats = async () => {
-        let idtoken = await auth.currentUser?.getIdToken()
-        if (idtoken) {
-            console.log(idtoken)
-
+  const [chats, setchats] = useState<chattype[]>([
+    { message: "Welcome to Financial Nexus", message_by: "ai" },
+  ]);
+  const { auth } = userfirebase();
+  const [show, setshow] = useState(false);
+  const pathname = usePathname();
+  const [prevchats, setprevchats] = useState<chattype[] | null>(null);
+  const toggle = () => {
+    setshow((value) => !value);
+  };
+  const fetchprevchats = async () => {
+    let idtoken = await auth.currentUser?.getIdToken();
+    if (idtoken) {
+      console.log(idtoken);
 
       let response = await axios.get(SERVER + "/data-get/get-messages/", {
         headers: {
@@ -123,7 +124,9 @@ const ChatWidget = () => {
       </Button>
       <div
         id="chat-container"
-        className={`fixed ${!show && "hidden"} aitom-5 z-40 lg:right-4 md:right-4 right-0 lgw-96 md:w-96 w-80`}
+        className={`fixed ${
+          !show && "hidden"
+        } aitom-5 z-40 lg:right-4 md:right-4 right-0 lgw-96 md:w-96 w-80`}
       >
         <div className="bg-white shadow-md pb-2 rounded-lg  w-full ">
           <div className=" border-b p-4 bg-gray-900 text-white rounded-t-lg flex justify-between items-center">
@@ -151,7 +154,7 @@ const ChatWidget = () => {
           </div>
 
           {/* previos chats  */}
-          <div id="chatbox" className="p-4 h-80 overflow-y-auto" >
+          <div id="chatbox" className="p-4 h-80 overflow-y-auto">
             {prevchats &&
               prevchats.map((chat, index) =>
                 chat.message_by === "user" ? (
@@ -187,20 +190,23 @@ const ChatWidget = () => {
               )}
           </div>
 
-                
-
-                    <Form {...form} >
-                        <form onSubmit={form.handleSubmit(onSubmit)} className=" justify-evenly px-2s flex">
-                            <FormField
-
-                                control={form.control}
-                                name="message"
-                                render={({ field }) => (
-                                    <FormItem>
-
-                                        <FormControl>
-                                            <Input className='w-[12rem]' placeholder="shadcn" {...field} />
-                                        </FormControl>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className=" justify-evenly px-2s flex"
+            >
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        className="w-[12rem]"
+                        placeholder="shadcn"
+                        {...field}
+                      />
+                    </FormControl>
 
                     <FormMessage />
                   </FormItem>
