@@ -46,7 +46,7 @@ const RegisterPage = () => {
         setPending(true)
         try{
 
-            signupwithemailandpassword(values.email, values.password).then((resp)=>
+            signupwithemailandpassword(values.email, values.password).then((usercred)=>
 
                 register(usercred,values.username).then((data)=>{
                     if(data.success){
