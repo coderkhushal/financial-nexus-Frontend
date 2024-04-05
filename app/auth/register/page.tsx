@@ -46,16 +46,18 @@ const RegisterPage = () => {
         setPending(true)
         try{
 
-            let usercred = await signupwithemailandpassword(values.email, values.password)
-            register(usercred,values.username)
-            .then((data)=>{
-                if(data.success){
-                    router.push("/main/dashboard")
-                }
-                setsuccess(data.success)
-                seterror(data.error)
-                setPending(false)
-            })
+            signupwithemailandpassword(values.email, values.password).then((resp)=>
+
+                register(usercred,values.username).then((data)=>{
+                    if(data.success){
+                        router.push("/main/dashboard")
+                    }
+                    setsuccess(data.success)
+                    seterror(data.error)
+                    setPending(false)
+                })
+            )
+
         }
         catch(err){
             
