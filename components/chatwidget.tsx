@@ -46,16 +46,20 @@ const ChatWidget = () => {
   const fetchprevchats = async () => {
     let idtoken = await auth.currentUser?.getIdToken();
     if (idtoken) {
-      console.log(idtoken);
+      try{
 
-      let response = await axios.get(SERVER + "/data-get/get-messages/", {
-        headers: {
-          Authorization: "Bearer " + idtoken,
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(response.data);
-      setprevchats(response.data);
+        let response = await axios.get(SERVER + "/data-get/get-messages/", {
+          headers: {
+            Authorization: "Bearer " + idtoken,
+            "Content-Type": "application/json",
+          },
+        });
+        setprevchats(response.data);
+      }
+      catch(err){
+        setprevchats([])
+        console.log(err)
+      }
     }
   };
   const form = useForm<z.infer<typeof formSchema>>({

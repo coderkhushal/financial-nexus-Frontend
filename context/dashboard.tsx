@@ -6,12 +6,13 @@ import { userfirebase } from "./firebase";
 import { BankDetails, CardDetails } from "@/app/types/bankcard";
 import { Loan } from "@/app/types/loan";
 import { Investment, Purchase } from "@/app/types/purchase-investment";
+import { useRouter } from "next/navigation";
 const SERVER = "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io"
 type fetchdetailstype = { url: string, variant: "BANK" | "LOAN" | "CARD" | "EMI" | "PURCHASE" | "INVESTMENT" }
 
-interface dashboardcontexttype{
+interface dashboardcontexttype {
     fetchdetails: ({ url, variant }: fetchdetailstype) => Promise<void>,
-    bankdetails: BankDetails[] | null, 
+    bankdetails: BankDetails[] | null,
     carddetails: CardDetails[] | null,
     loandetails: Loan[] | null,
     emidetails: Loan[] | null,
@@ -22,7 +23,7 @@ interface dashboardcontexttype{
 
 
 const DashboardContext = createContext<dashboardcontexttype>({
-    
+
     fetchdetails: ({ url, variant }: fetchdetailstype) => Promise.resolve(),
     bankdetails: [],
     carddetails: [],
@@ -30,11 +31,12 @@ const DashboardContext = createContext<dashboardcontexttype>({
     emidetails: [],
     purchasedetails: [],
     investmentdetails: [],
-    refresh: ({ variant }: { variant: "BANK" | "LOAN" | "CARD" | "EMI" | "PURCHASE" | "INVESTMENT" }) => {},
+    refresh: ({ variant }: { variant: "BANK" | "LOAN" | "CARD" | "EMI" | "PURCHASE" | "INVESTMENT" }) => { },
 
 })
 
 const DashBoardState = ({ children }: { children: React.ReactNode }) => {
+    const router= useRouter()
     const { auth } = userfirebase()
     const [bankdetails, setbankdetails] = useState([])
     const [carddetails, setcarddetails] = useState([])
@@ -43,38 +45,45 @@ const DashBoardState = ({ children }: { children: React.ReactNode }) => {
     const [purchasedetails, setpurchasedetails] = useState([])
     const [investmentdetails, setinvestmentdetails] = useState([])
     const fetchdetails = async ({ url, variant }: fetchdetailstype) => {
+        try {
         const idtoken = await auth.currentUser?.getIdToken()
-        const res = await fetch(`${SERVER}/data-get/${url}/`, {
-            headers: {
-                "Authorization": "Bearer " + idtoken,
-                'Content-Type': 'application/json'
-            },
 
-        })
-        const data = await res.json()
-        console.log(data)
-        switch (variant) {
-            case "BANK":
-                setbankdetails((value)=>data)
-                break;
-            case "LOAN":
-                setloandetails(data)
-                break;
-            case "CARD":
-                setcarddetails(data)
-                break;
-            case "PURCHASE":
-                setpurchasedetails(data)
-                break;
-            case "INVESTMENT":
-                setinvestmentdetails(data)
-                break;
-            case "EMI":
-                setemidetails(data)
-                break;
+            const res = await fetch(`${SERVER}/data-get/${url}/`, {
+                headers: {
+                    "Authorization": "Bearer " + idtoken,
+                    'Content-Type': 'application/json'
+                },
+
+            })
+            const data = await res.json()
+
+            switch (variant) {
+                case "BANK":
+                    setbankdetails((value) => data)
+                    break;
+                case "LOAN":
+                    setloandetails(data)
+                    break;
+                case "CARD":
+                    setcarddetails(data)
+                    break;
+                case "PURCHASE":
+                    setpurchasedetails(data)
+                    break;
+                case "INVESTMENT":
+                    setinvestmentdetails(data)
+                    break;
+                case "EMI":
+                    setemidetails(data)
+                    break;
+            }
         }
-
-
+        catch(err){
+            console.log("error")
+            router.push("/auth/login")
+        }
+                    
+                    
 
     }
     const refresh = ({ variant }: { variant: "BANK" | "LOAN" | "CARD" | "EMI" | "PURCHASE" | "INVESTMENT" }) => {
@@ -108,7 +117,7 @@ const DashBoardState = ({ children }: { children: React.ReactNode }) => {
 
 
     return (
-        <DashboardContext.Provider value={{ bankdetails,fetchdetails,refresh,  carddetails, loandetails, emidetails, purchasedetails, investmentdetails }}>
+        <DashboardContext.Provider value={{ bankdetails, fetchdetails, refresh, carddetails, loandetails, emidetails, purchasedetails, investmentdetails }}>
             {children}
         </DashboardContext.Provider>
     )

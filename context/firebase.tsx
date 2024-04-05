@@ -16,6 +16,7 @@ import {
 } from "firebase/auth";
 
 import { useRouter } from "next/navigation";
+import axios from "axios";
 const firebaseConfig = {
   apiKey: "AIzaSyA4zcVGS8WfwIvRQUhKsTB5-x78GRdGWTg",
   authDomain: "financial-dashboard-e0c5f.firebaseapp.com",
@@ -93,10 +94,8 @@ export const Signinprovider = ({ children }: { children: React.ReactNode }) => {
   //login with google
   const signinwithgoogle = () =>
     signInWithPopup(auth, provider).then((usercred) => {
-      setUser(usercred);
-      localStorage.setItem("user", JSON.stringify(usercred));
-
-      return usercred;
+      setUser((value)=>usercred);
+      
     });
 
   const handlesignout = () =>

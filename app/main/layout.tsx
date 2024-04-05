@@ -22,7 +22,7 @@ const MainLayout = ({children}:{children: React.ReactNode}) => {
         
     
       
-    }, [auth])
+    }, [auth.currentUser])
 
   return (
     <div className='w-full h-full flex '>
