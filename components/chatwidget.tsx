@@ -71,8 +71,8 @@ const ChatWidget = () => {
       { message: values.message, message_by: "user" },
     ]);
     const idtoken = await auth.currentUser?.getIdToken();
+    form.reset();
     if (idtoken) {
-      console.log(idtoken);
 
       let response = await axios.post(
         SERVER + "/data-add/add-message/",
@@ -103,7 +103,7 @@ const ChatWidget = () => {
     } else {
       setchats([...chats, { message: "some error occured", message_by: "ai" }]);
     }
-    form.reset();
+    
   }
   useEffect(() => {
     fetchprevchats();
@@ -203,7 +203,7 @@ const ChatWidget = () => {
                     <FormControl>
                       <Input
                         className="w-[12rem]"
-                        placeholder="shadcn"
+                        placeholder="Type your message here"
                         {...field}
                       />
                     </FormControl>

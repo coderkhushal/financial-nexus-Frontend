@@ -10,12 +10,14 @@ const Navbar = () => {
         if (auth.currentUser) {
 
             setname(auth.currentUser?.displayName)
+            setemail(auth.currentUser?.email)
             setprofile(auth.currentUser?.photoURL)
         }
 
 
     }, [auth.currentUser])
     const [name, setname] = useState<string | null>(null)
+    const [email, setemail] = useState<string | null>(null)
     const [profile, setprofile] = useState<string | null>("")
     return (
 
@@ -74,8 +76,8 @@ const Navbar = () => {
                                 <div className="top-0 left-7 absolute w-3 h-3 bg-lime-500 border-2 border-white rounded-full"></div>
                             </div>
                         </div>
-                        <div className="p-2 md:block text-left">
-                            <h2 className="text-sm font-semibold text-gray-800">{name ? name : " "}</h2>
+                        <div className="p-2 md:block text-left  items-center flex">
+                            <h2 className="text-sm font-semibold text-gray-800">{name ? name : email}</h2>
 
                         </div>
                     </button>
