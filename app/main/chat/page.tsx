@@ -130,7 +130,7 @@ const ChatPage = () => {
                 </p>
               </div>
             ) : (
-              <div className="flex mb-4 cursor-pointer">
+              <div key={index} className="flex mb-4 cursor-pointer">
                 <div className="flex max-w-96 bg-white rounded-lg p-3 gap-3">
                   <p className="text-gray-700">
                     <MarkdownRenderer content={chat.message} />
@@ -149,7 +149,7 @@ const ChatPage = () => {
                 </p>
               </div>
             ) : (
-              <div className="flex mb-4 cursor-pointer">
+              <div key={index} className="flex mb-4 cursor-pointer">
                 <div className="flex max-w-96 bg-white rounded-lg p-3 gap-3">
                   <p className="text-gray-700">
                     <MarkdownRenderer content={chat.message} />
@@ -167,7 +167,7 @@ const ChatPage = () => {
       <Form {...form} >
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className=" px-2s  space-x-2 flex fixed bottom-0 w-4/5 "
+          className=" px-2s  space-x-2 flex fixed bottom-0 p-2   w-4/5 "
         >
           <FormField
             control={form.control}

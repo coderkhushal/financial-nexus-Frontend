@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import React from 'react'
 import { FaSignOutAlt } from 'react-icons/fa'
 import { Button } from './ui/button'
+import Image from 'next/image'
 
 const Sidebar = () => {
     const pathname = usePathname()
@@ -16,12 +17,13 @@ const Sidebar = () => {
             className="sidebar h-full p-2 w-full relative  text-center bg-gray-900"
         >
             <div className="text-gray-100 text-xl ">
-                <div className=" cursor-pointer p-2.5 mt-1 flex items-center h-full">
                     <Link href="/">
+                <div className=" cursor-pointer p-2.5 mt-1 flex items-center  h-full gap-2">
+                    <Image alt="logo"  height={20} width={50} className='rounded-lg' src="/financial-nexus-logo.jpg"/>
                         <h1 className="font-bold text-gray-200 text-[17px] text-start ">Financial Nexus</h1>
-                    </Link>
 
                 </div>
+                    </Link>
                 <div className="my-2 bg-gray-600 h-[1px]"></div>
             </div>
             {routes.map((route, index) => (

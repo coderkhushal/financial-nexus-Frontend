@@ -125,7 +125,7 @@ const ChatWidget = () => {
           show && "hidden"
         } z-40 absolute aitom-3 right-2 w-24 h-14`}
       >
-        FinBot
+        FinBOT
       </Button>
       <div
         id="chat-container"
@@ -135,7 +135,7 @@ const ChatWidget = () => {
       >
         <div className="bg-white shadow-md pb-2 rounded-lg  w-full ">
           <div className=" border-b p-4 bg-gray-900 text-white rounded-t-lg flex justify-between items-center">
-            <h1>FinBot</h1>
+            <h1>FinBOT</h1>
             <button
               id="close-chat"
               className="text-gray-300 hover:text-gray-400 focus:outline-none focus:text-gray-400"
