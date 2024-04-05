@@ -3,6 +3,7 @@
 import { UserCredential } from "firebase/auth";
 const SERVER= "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io"
 import { auth } from "@/context/firebase";
+import axios from "axios";
 
 export const register= async (usercred: UserCredential | void, name?: string )=>{
     if(!auth.currentUser){
@@ -16,13 +17,14 @@ export const register= async (usercred: UserCredential | void, name?: string )=>
     let email =auth.currentUser.email
     try{
 
-        const resp = await fetch(`${SERVER}/user/create-user`, {
-            method: "POST",
+        const resp = await axios.post(`${SERVER}/user/create-user`, 
+            {"name": name, "email": email, "firebase_user_id": firebase_user_id},
+            {
             headers: {
                 "Authorization": "Bearer " + firebase_user_id,
                 'Content-Type': 'application/json'
-            }, 
-            body: JSON.stringify({name, email, firebase_user_id})
+            } 
+            
         })
         if(resp.status !== 200){
             return {"error":"Internal Server Error", success:undefined}
