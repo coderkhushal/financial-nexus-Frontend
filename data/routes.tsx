@@ -1,4 +1,4 @@
-import { CircleUserIcon, HandCoins, HomeIcon } from "lucide-react";
+import { Bot, CircleUserIcon, HandCoins, HomeIcon } from "lucide-react";
 import { AiFillProfile, AiOutlineTransaction } from "react-icons/ai";
 
 export const routes= [
@@ -18,6 +18,11 @@ export const routes= [
         route:"/main/transactions", 
         name: "Transactions",
         icon : HandCoins
+    },
+    {
+        route:"/main/chat", 
+        name: "FinBOT",
+        icon : Bot
     }
 
 ]

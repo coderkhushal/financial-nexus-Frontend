@@ -1,189 +1,210 @@
-import { Button } from "@/components/ui/button";
-import React from "react";
+"use client"
+import React, { useEffect, useState } from "react";
 
-const page = () => {
+import axios from "axios";
+import { userfirebase } from "@/context/firebase";
+import { usePathname } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+
+import { Button } from "@/components/ui/button";
+import MarkdownRenderer from "@/components/markdownrender";
+const SERVER =
+  "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io";
+interface chattype {
+  message: string;
+  message_by: "user" | "ai";
+  created_at?: string;
+  id?: string;
+}
+const formSchema = z.object({
+  message: z.string().min(1, {
+    message: "message is required",
+  }),
+});
+const ChatPage = () => {
+  const [chats, setchats] = useState<chattype[]>([]);
+  const { auth } = userfirebase();
+  const [show, setshow] = useState(false);
+  const pathname = usePathname();
+  const [prevchats, setprevchats] = useState<chattype[] | null>(null);
+  const toggle = () => {
+    setshow((value) => !value);
+  };
+  const fetchprevchats = async () => {
+    let idtoken = await auth.currentUser?.getIdToken();
+    if (idtoken) {
+      try {
+
+        let response = await axios.get(SERVER + "/data-get/get-messages/", {
+          headers: {
+            Authorization: "Bearer " + idtoken,
+            "Content-Type": "application/json",
+          },
+        });
+        setprevchats(response.data);
+      }
+      catch (err) {
+        setprevchats([])
+        console.log(err)
+      }
+    }
+  };
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      message: "",
+    },
+  });
+
+  // 2. Define a submit handler.
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setchats((value) => [
+      ...value,
+      { message: values.message, message_by: "user" },
+    ]);
+    const idtoken = await auth.currentUser?.getIdToken();
+    form.reset();
+    if (idtoken) {
+
+      let response = await axios.post(
+        SERVER + "/data-add/add-message/",
+        {
+          message: values.message,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + idtoken,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.status == 200) {
+        setchats((value) => [
+          ...value,
+          { message: response.data[1].message, message_by: "ai" },
+        ]);
+      } else {
+        setchats((value) => [
+          ...value,
+          {
+            message: "I am Sorry. There's some error on the server.",
+            message_by: "ai",
+          },
+        ]);
+      }
+    } else {
+      setchats([...chats, { message: "some error occured", message_by: "ai" }]);
+    }
+
+  }
+  useEffect(() => {
+    fetchprevchats();
+  }, [auth]);
   return (
-    <div className="flex flex-col flex-auto h-full p-6">
-      <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
-        <div className="flex flex-col h-full overflow-x-auto mb-4">
-          <div className="flex flex-col h-full">
-            <div className="grid grid-cols-12 gap-y-2">
-              <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                <div className="flex flex-row items-center">
-                  <div className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-900 flex-shrink-0">
-                    A
-                  </div>
-                  <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
-                    <div>Hey How are you today?</div>
-                  </div>
+    <div className="flex-1 w-full">
+
+
+
+
+      <div className="h-screen overflow-y-auto p-4 pb-36">
+
+        {prevchats &&
+          prevchats.map((chat, index) =>
+            chat.message_by === "user" ? (
+              <div className="mb-2 text-right" key={index}>
+                <p className="bg-gray-900 text-white rounded-lg py-2 px-4 inline-block">
+                  {chat.message}
+                </p>
+              </div>
+            ) : (
+              <div className="flex mb-4 cursor-pointer">
+                <div className="flex max-w-96 bg-white rounded-lg p-3 gap-3">
+                  <p className="text-gray-700">
+                    <MarkdownRenderer content={chat.message} />
+                  </p>
                 </div>
               </div>
-              <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                <div className="flex flex-row items-center">
-                  <div className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-900 flex-shrink-0">
-                    A
-                  </div>
-                  <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
-                    <div>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                      Vel ipsa commodi illum saepe numquam maxime asperiores
-                      voluptate sit, minima perspiciatis.
-                    </div>
-                  </div>
+            )
+          )}
+        {!prevchats && <div>Loading</div>}
+        {chats.length > 0 &&
+          chats.map((chat, index) =>
+            chat.message_by === "user" ? (
+              <div key={index} className="mb-2 text-right">
+                <p className="bg-gray-900 text-white rounded-lg py-2 px-4 inline-block">
+                  {chat.message}
+                </p>
+              </div>
+            ) : (
+              <div className="flex mb-4 cursor-pointer">
+                <div className="flex max-w-96 bg-white rounded-lg p-3 gap-3">
+                  <p className="text-gray-700">
+                    <MarkdownRenderer content={chat.message} />
+                  </p>
                 </div>
               </div>
-              <div className="col-start-6 col-end-13 p-3 rounded-lg">
-                <div className="flex items-center justify-start flex-row-reverse">
-                  <div className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-900 flex-shrink-0">
-                    A
-                  </div>
-                  <div className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
-                    <div>I&apos;m ok what about you?</div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-start-6 col-end-13 p-3 rounded-lg">
-                <div className="flex items-center justify-start flex-row-reverse">
-                  <div className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-900 flex-shrink-0">
-                    A
-                  </div>
-                  <div className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
-                    <div>
-                      Lorem ipsum dolor sit, amet consectetur adipisicing. ?
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                <div className="flex flex-row items-center">
-                  <div className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-900 flex-shrink-0">
-                    A
-                  </div>
-                  <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
-                    <div>Lorem ipsum dolor sit amet !</div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-start-6 col-end-13 p-3 rounded-lg">
-                <div className="flex items-center justify-start flex-row-reverse">
-                  <div className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-900 flex-shrink-0">
-                    A
-                  </div>
-                  <div className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
-                    <div>
-                      Lorem ipsum dolor sit, amet consectetur adipisicing. ?
-                    </div>
-                    <div className="absolute text-xs bottom-0 right-0 -mb-5 mr-2 text-gray-500">
-                      Seen
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                <div className="flex flex-row items-center">
-                  <div className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-900 flex-shrink-0">
-                    A
-                  </div>
-                  <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
-                    <div>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Perspiciatis, in.
-                    </div>
-                    <div>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Perspiciatis, in.
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-start-1 col-end-8 p-3 rounded-lg">
-                <div className="flex flex-row items-center">
-                  <div className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-900 flex-shrink-0">
-                    A
-                  </div>
-                  <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
-                    <div className="flex flex-row items-center">
-                      <button className="flex items-center justify-center bg-gray-900 hover:bg-indigo-800 rounded-full h-8 w-10">
-                        <svg
-                          className="w-6 h-6 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="1.5"
-                            d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-                          ></path>
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="1.5"
-                            d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                          ></path>
-                        </svg>
-                      </button>
-                      <div className="flex flex-row items-center space-x-px ml-4">
-                        <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-4 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-8 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-8 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-10 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-10 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-12 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-10 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-6 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-5 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-4 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-3 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-10 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-10 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-8 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-8 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-1 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-1 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-8 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-8 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-2 w-1 bg-gray-500 rounded-lg"></div>
-                        <div className="h-4 w-1 bg-gray-500 rounded-lg"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
-          <div></div>
-          <div className="flex-grow ml-4">
-            <div className="relative w-full">
-              <input
-                type="text"
-                className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
-              />
-            </div>
-          </div>
-          <div className="ml-4">
-            <Button className="flex items-center justify-center bg-gray-900 hover:bg-gray-900 rounded-xl text-white px-4 py-1 flex-shrink-0">
-              <span>Send</span>
-            </Button>
-          </div>
-        </div>
+            )
+          )}
+
+
+
       </div>
+
+
+      <Form {...form} >
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className=" px-2s  space-x-2 flex fixed bottom-0 w-4/5 "
+        >
+          <FormField
+            control={form.control}
+            name="message"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    className=" bg-white w-[60rem] flex"
+                    placeholder="Type your message here"
+                    {...field}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit">Submit</Button>
+        </form>
+      </Form>
     </div>
+
   );
 };
 
-export default page;
+export default ChatPage;
+
+// left
+{
+  /* <div className="mb-2">
+<p className="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 inline-block">Welcome to Financial Nexus</p>
+</div> */
+}
+// right
+{
+  /* <div className="mb-2 text-right">
+<p className="bg-gray-900 text-white rounded-lg py-2 px-4 inline-block">hello</p>
+</div> */
+}
