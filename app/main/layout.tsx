@@ -30,7 +30,7 @@ const MainLayout = ({children}:{children: React.ReactNode}) => {
 
     {/* <Suspense fallback={<Loading/>}> */}
     <ChatWidget/>
-      <div className='w-full overflow-y-hidden'>
+      <div className='w-full overflow-y-hidden bg-gray-200'>
 
     <Navbar/>
     <div className='py-6 px-4 w-full h-full overflow-y-scroll'>

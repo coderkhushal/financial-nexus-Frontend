@@ -52,7 +52,7 @@ const Page = () => {
   }, [router, auth]);
 
   return (
-    <div className="">
+    <div className="bg-gray-200">
       <div className="grid gap-4  lg:gap-8">
         <div className="grid auto-rows-max items-start gap-4  lg:gap-8">
           <Card>

@@ -42,7 +42,7 @@ const DashBoardPage = () => {
   }, [auth.currentUser]);
 
   return (
-    <div className="w-full gap-10 h-full flex flex-col">
+    <div className="w-full gap-10 h-full flex flex-col bg-gray-200">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 w-full">
         <BankCreationModal>
           <CreationCard
