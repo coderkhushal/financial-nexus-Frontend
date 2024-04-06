@@ -16,8 +16,9 @@ export const register= async (usercred: UserCredential | void, name?: string )=>
     let firebase_user_id= auth.currentUser.uid
     let email =auth.currentUser.email
     try{
+        if(firebase_user_id){
 
-        const resp = await axios.post(`${SERVER}/user/create-user`, 
+            const resp = await axios.post(`${SERVER}/user/create-user`, 
             {"name": name, "email": email, "firebase_user_id": firebase_user_id},
             {
             headers: {
@@ -32,6 +33,7 @@ export const register= async (usercred: UserCredential | void, name?: string )=>
             
             return {"success":"User registered successfully", error: undefined}
         }
+    }
     }
     catch(err){
         return {"error":"Internal Server Error", success: undefined}
