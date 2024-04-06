@@ -21,7 +21,6 @@ export const register= async (usercred: UserCredential | void, name?: string )=>
             {"name": name, "email": email, "firebase_user_id": firebase_user_id},
             {
             headers: {
-                "Authorization": "Bearer " + firebase_user_id,
                 'Content-Type': 'application/json'
             } 
             
