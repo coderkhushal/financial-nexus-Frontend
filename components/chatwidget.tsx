@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import axios from "axios";
@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import Image from "next/image";
 
 import {
   Form,
@@ -46,8 +47,7 @@ const ChatWidget = () => {
   const fetchprevchats = async () => {
     let idtoken = await auth.currentUser?.getIdToken();
     if (idtoken) {
-      try{
-
+      try {
         let response = await axios.get(SERVER + "/data-get/get-messages/", {
           headers: {
             Authorization: "Bearer " + idtoken,
@@ -55,10 +55,9 @@ const ChatWidget = () => {
           },
         });
         setprevchats(response.data);
-      }
-      catch(err){
-        setprevchats([])
-        console.log(err)
+      } catch (err) {
+        setprevchats([]);
+        console.log(err);
       }
     }
   };
@@ -78,7 +77,6 @@ const ChatWidget = () => {
     const idtoken = await auth.currentUser?.getIdToken();
     form.reset();
     if (idtoken) {
-
       let response = await axios.post(
         SERVER + "/data-add/add-message/",
         {
@@ -108,7 +106,6 @@ const ChatWidget = () => {
     } else {
       setchats([...chats, { message: "some error occured", message_by: "ai" }]);
     }
-    
   }
   useEffect(() => {
     fetchprevchats();
@@ -125,6 +122,13 @@ const ChatWidget = () => {
           show && "hidden"
         } z-40 absolute aitom-3 right-2 w-24 h-14`}
       >
+        <Image
+          alt="logo"
+          height={30}
+          width={30}
+          className="rounded-full m-1"
+          src="/Finbotlogo.jpeg"
+        />{" "}
         FinBOT
       </Button>
       <div
@@ -135,7 +139,17 @@ const ChatWidget = () => {
       >
         <div className="bg-white shadow-md pb-2 rounded-lg  w-full ">
           <div className=" border-b p-4 bg-gray-900 text-white rounded-t-lg flex justify-between items-center">
-            <h1>FinBOT</h1>
+            <div className="flex">
+              {" "}
+              <Image
+                alt="logo"
+                height={30}
+                width={30}
+                className="rounded-full m-1"
+                src="/Finbotlogo.jpeg"
+              />
+              <h1>FinBOT</h1>
+            </div>
             <button
               id="close-chat"
               className="text-gray-300 hover:text-gray-400 focus:outline-none focus:text-gray-400"
@@ -171,8 +185,7 @@ const ChatWidget = () => {
                 ) : (
                   <div className="mb-2" key={index}>
                     <p className="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 inline-block">
-                      
-                    <MarkdownRenderer content={chat.message} />
+                      <MarkdownRenderer content={chat.message} />
                     </p>
                   </div>
                 )
@@ -188,11 +201,10 @@ const ChatWidget = () => {
                   </div>
                 ) : (
                   <div className="mb-2" key={index}>
-                  <p className="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 inline-block">
-                    
-                  <MarkdownRenderer content={chat.message} />
-                  </p>
-                </div>
+                    <p className="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 inline-block">
+                      <MarkdownRenderer content={chat.message} />
+                    </p>
+                  </div>
                 )
               )}
           </div>
