@@ -34,6 +34,9 @@ export const register= async (usercred: UserCredential | void, name?: string )=>
             return {"success":"User registered successfully", error: undefined}
         }
     }
+    else{
+        return {"error":"Firebase error"}
+    }
     }
     catch(err){
         return {"error":"Internal Server Error", success: undefined}
