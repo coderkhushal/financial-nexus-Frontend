@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import MarkdownRenderer from "./markdownrender";
-const SERVER = process.env.NEXT_PUBLIC_SERVER
+const SERVER = process.env.NEXT_PUBLIC_SERVER;
 interface chattype {
   message: string;
   message_by: "user" | "ai";
@@ -33,8 +33,7 @@ const formSchema = z.object({
   }),
 });
 const ChatWidget = () => {
-  const [chats, setchats] = useState<chattype[]>([
-  ]);
+  const [chats, setchats] = useState<chattype[]>([]);
   const { auth } = userfirebase();
   const [show, setshow] = useState(false);
   const pathname = usePathname();
@@ -141,12 +140,12 @@ const ChatWidget = () => {
               {" "}
               <Image
                 alt="logo"
-                height={30}
-                width={30}
+                height={50}
+                width={50}
                 className="rounded-full m-1"
                 src="/Finbotlogo.jpeg"
               />
-              <h1>FinBOT</h1>
+              <h1 className="my-auto">FinBOT</h1>
             </div>
             <button
               id="close-chat"
