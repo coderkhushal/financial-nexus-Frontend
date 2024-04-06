@@ -20,8 +20,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import MarkdownRenderer from "./markdownrender";
-const SERVER =
-  "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io";
+const SERVER = process.env.NEXT_PUBLIC_SERVER
 interface chattype {
   message: string;
   message_by: "user" | "ai";
@@ -35,7 +34,6 @@ const formSchema = z.object({
 });
 const ChatWidget = () => {
   const [chats, setchats] = useState<chattype[]>([
-    { message: "Welcome to Financial Nexus", message_by: "ai" },
   ]);
   const { auth } = userfirebase();
   const [show, setshow] = useState(false);
