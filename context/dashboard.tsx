@@ -7,7 +7,7 @@ import { BankDetails, CardDetails } from "@/app/types/bankcard";
 import { Loan } from "@/app/types/loan";
 import { Investment, Purchase } from "@/app/types/purchase-investment";
 import { useRouter } from "next/navigation";
-const SERVER = "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io"
+const SERVER = process.env.NEXT_PUBLIC_SERVER
 type fetchdetailstype = { url: string, variant: "BANK" | "LOAN" | "CARD" | "EMI" | "PURCHASE" | "INVESTMENT" }
 
 interface dashboardcontexttype {

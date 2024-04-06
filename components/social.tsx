@@ -5,8 +5,8 @@ import { FcGoogle } from 'react-icons/fc'
 import { Button } from './ui/button'
 import { userfirebase } from '@/context/firebase'
 import { useRouter } from 'next/navigation'
-const SERVER= "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io"
 import { register } from '@/actions/register'
+const SERVER = process.env.NEXT_PUBLIC_SERVER
 import axios from 'axios'
 const Social =({variant}:{variant: "LOGIN" | "SIGNUP"}) => {
   const router= useRouter()
@@ -22,7 +22,7 @@ const Social =({variant}:{variant: "LOGIN" | "SIGNUP"}) => {
                 router.push("/main/dashboard")
               } 
               else{
-                alert("Account already exist")
+                alert("Some Error Occured while registering")
               }
             })
           }

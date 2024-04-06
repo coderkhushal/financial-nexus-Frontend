@@ -1,7 +1,7 @@
 
 
 import { UserCredential } from "firebase/auth";
-const SERVER= "https://financial-nexus-backend.yellowbush-cadc3844.centralindia.azurecontainerapps.io"
+const SERVER= process.env.NEXT_PUBLIC_SERVER
 import { auth } from "@/context/firebase";
 import axios from "axios";
 
